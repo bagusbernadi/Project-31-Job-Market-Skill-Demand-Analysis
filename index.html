@@ -1,0 +1,485 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Project 31: Job Market Scraping &amp; Skill Demand</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Rancangan project portofolio Data Analyst: pipeline scraping mingguan lowongan Data Analyst di Indonesia untuk analisis skill, salary, kota, industri, dan tren.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700;800&display=swap">
+<style>
+/* Layout: tema terang ala Google (single theme, sengaja): latar putih keabuan, kartu putih;
+   biru = struktur, kuning = penanda utama, hijau = info pendukung, merah = aksen.
+   Skala huruf: H1 32 · H2 25 · H3 19 · body 16.5 · keterangan 14 · label 12.5 */
+:root{color-scheme:light;
+--bg:#F8F9FA;--card:#FFFFFF;--sub:#F1F3F4;--line:#DADCE0;
+--ink:#202124;--head:#174EA6;--mut:#5F6368;
+--navy:#1A73E8;--navy-ink:#FFFFFF;--teal:#188038;--amber:#FBBC04;--amber-ink:#3C2A00;--bar:#1A73E8;--soft:#E8F0FE;
+--gb:#4285F4;--gr:#EA4335;--gy:#FBBC04;--gg:#34A853;
+--navyH:#1A73E8;--amberH:#B06000;--tealH:#188038;--plumH:#9334E6;--roseH:#D93025;--skyH:#1967D2;--onph:#fff;
+--f:"Source Sans 3",Calibri,Carlito,"Segoe UI",Arial,sans-serif;
+--h1:clamp(26px,2.6vw,32px);--h2:clamp(21px,2vw,25px);--h3:19px;--body:16.5px;--small:14px;--label:12.5px}
+[hidden]{display:none!important}
+*{box-sizing:border-box}html{scroll-padding-top:64px;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 var(--body)/1.6 var(--f)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+main{max-width:880px;margin:0 auto;padding-block:16px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+b,strong{font-weight:700}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--bg);padding:8px 0;display:flex;gap:6px;overflow-x:auto}
+nav a{flex:none;background:var(--card);border:1px solid var(--line);color:var(--ink);text-decoration:none;border-radius:999px;padding:6px 14px;font-size:var(--small);font-weight:600}
+nav a:hover,nav a:focus-visible{background:var(--amber);border-color:var(--amber);color:var(--amber-ink);outline:none}
+.banner{background:var(--navy);color:var(--navy-ink);border-radius:18px;padding:22px 26px}
+.banner h1{margin:0 0 8px;font-size:var(--h1);font-weight:800;line-height:1.2;text-wrap:balance;letter-spacing:-.01em}.banner p{margin:0;font-size:18px;line-height:1.55;opacity:.97}.banner .goal b{font-weight:800}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.tags{align-items:center}.tlab{font-size:var(--small);font-weight:700;margin-right:4px;opacity:.95}
+.tag{border-radius:999px;padding:3px 12px;font-size:var(--label);font-weight:700;background:rgba(255,255,255,.2);letter-spacing:.02em}.tag.a{background:var(--amber);color:var(--amber-ink)}
+.card{border-radius:16px;padding:16px 20px;background:var(--card);border:1px solid var(--line);margin:12px 0}
+.card p{margin:8px 0}
+h2{font-size:var(--h2);font-weight:800;color:var(--head);margin:48px 0 10px;padding-bottom:8px;border-bottom:2px solid var(--line);line-height:1.25;text-wrap:balance}
+h2 small{display:block;font-size:var(--small);font-weight:400;color:var(--mut);margin-top:4px}
+h3{font-size:var(--h3);font-weight:700;color:var(--head);margin:16px 0 6px;line-height:1.3}
+.card h3:first-child,.card>div>h3:first-child{margin-top:4px}
+.add{display:inline-block;vertical-align:middle;margin-left:8px;border-radius:999px;padding:2px 10px;font-size:var(--label);font-weight:700;background:var(--teal);color:#fff}
+.how{background:var(--soft);border-radius:12px;padding:12px 16px;margin:10px 0;font-size:var(--small);line-height:1.55;color:var(--ink)}.how::before{content:"Cara membaca ";font-weight:700;color:var(--teal)}
+.callout{border-radius:14px;padding:14px 20px;margin:12px 0;font-size:16px}.callout h4{margin:0 0 6px;font-size:var(--h3);font-weight:700}.callout p{margin:6px 0}
+.callout.a{background:var(--amber);color:var(--amber-ink)}.callout.g{background:var(--teal);color:#fff}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0}.kpis .card{margin:0}
+.kpi .v{font-size:30px;font-weight:800;display:block;line-height:1.15;color:var(--head);font-variant-numeric:tabular-nums}.kpi .l{display:block;font-weight:700;font-size:16px;margin-top:2px}.kpi .d{display:block;font-size:var(--small);line-height:1.4;margin-top:6px;color:var(--mut)}
+.kpi.t{background:var(--teal);border-color:var(--teal);color:#fff}.kpi.am{background:var(--amber);border-color:var(--amber);color:var(--amber-ink)}
+.kpi.t .v,.kpi.t .d,.kpi.am .v,.kpi.am .d{color:inherit}
+table{border-collapse:collapse;width:100%;font-size:15px;background:var(--card);border-radius:12px;overflow:hidden}
+th{background:var(--navy);color:var(--navy-ink);padding:9px 12px;text-align:left;vertical-align:top;font-weight:700}
+td{padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:nth-child(odd) td{background:var(--sub)}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:10px 0}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:6px 0;display:grid;grid-template-columns:40px 1fr;gap:4px 8px;font-size:16px;line-height:1.45}
+.q .id{font-weight:800;color:var(--head)}.q .m{grid-column:2;font-size:var(--small);color:var(--mut)}
+.pri{display:inline-block;border-radius:999px;padding:1px 9px;font-size:var(--label);font-weight:700;margin-left:6px;background:var(--sub);border:1px solid var(--line);color:var(--mut)}.pri.M{background:var(--amber);border-color:var(--amber);color:var(--amber-ink)}.pri.S{background:var(--navy);border-color:var(--navy);color:#fff}
+.theme{font-size:var(--label);font-weight:700;color:var(--teal);margin:20px 0 4px;text-transform:uppercase;letter-spacing:.08em}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:8px 0}
+.flow span{border-radius:999px;padding:5px 12px;font-size:var(--small);font-weight:700;background:var(--sub);border:1px solid var(--line)}
+.flow span.ng{background:var(--amber);border-color:var(--amber);color:var(--amber-ink)}.flow span.ok{background:var(--teal);border-color:var(--teal);color:#fff}.flow i{font-style:normal;color:var(--mut);font-size:var(--small)}
+.row{display:flex;align-items:center;gap:8px;margin:6px 0;width:100%;font:inherit;font-size:var(--small);color:var(--ink);background:none;border:0;padding:0;cursor:pointer;text-align:left}
+.row .n{width:96px;flex:none;font-weight:600}.row .tr{flex:1;background:var(--sub);border-radius:8px;height:24px;position:relative;overflow:hidden}
+.row .b{position:absolute;left:0;top:0;bottom:0;border-radius:8px;background:var(--bar);transition:width .25s}
+.row.sel .b{background:var(--amber)}.row.sel .n{color:var(--head);font-weight:800}
+.row .c{width:58px;text-align:right;flex:none;font-variant-numeric:tabular-nums;font-weight:600}
+.row:focus-visible{outline:3px solid var(--amber);outline-offset:2px;border-radius:8px}
+.ctl{display:flex;align-items:center;gap:12px;margin:14px 0 10px;font-weight:700;font-size:15px}.ctl input{flex:1;accent-color:#F2A541}.ctl output{min-width:48px;text-align:right}
+.res{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}.res div{background:var(--sub);border-radius:12px;padding:10px 14px;font-size:var(--small);color:var(--mut)}.res b{display:block;font-size:24px;font-weight:800;color:var(--head);font-variant-numeric:tabular-nums}
+.steps{counter-reset:s;display:grid;gap:8px;margin:10px 0;padding:0;list-style:none}
+.steps li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px 12px 54px;position:relative}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:14px;top:12px;width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font-weight:700;display:grid;place-items:center;font-size:14px}
+.steps li.L::before{background:var(--amber);color:var(--amber-ink)}
+.steps b.t{display:block;font-size:17px;color:var(--head);line-height:1.3}.steps p{margin:6px 0;font-size:15px;line-height:1.5}.steps .meta{font-size:13px;color:var(--mut)}
+.phase{font-size:var(--label);font-weight:700;color:var(--teal);margin:18px 0 0;text-transform:uppercase;letter-spacing:.08em}
+.tools{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:12px 0}.tools .card{margin:0}
+.tools b{display:block;font-size:var(--h3);color:var(--head)}.tools .r{font-size:15px;margin:6px 0 0}.tools .alt{font-size:var(--small);color:var(--mut);margin:8px 0 0;padding-top:8px;border-top:1px dashed var(--line)}
+details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:8px 0}summary{cursor:pointer;font-weight:700;font-size:17px;color:var(--head)}details p{font-size:15.5px}
+.pill{border-radius:999px;padding:1px 9px;font-size:var(--label);font-weight:700;background:var(--teal);color:#fff;margin-left:4px}.pill.d{background:var(--sub);border:1px solid var(--line);color:var(--mut)}
+.chip{display:inline-block;border-radius:999px;padding:3px 11px;margin:3px 4px 3px 0;font-size:var(--small);font-weight:600;background:var(--sub);border:1px solid var(--line)}
+.tm{border-bottom:2px dotted var(--amber);background:rgba(242,165,65,.16);border-radius:4px;padding:0 2px;cursor:help}
+#tip{position:fixed;display:none;max-width:320px;white-space:pre-line;background:#202124;color:#fff;padding:10px 12px;border-radius:12px;font-size:var(--small);line-height:1.4;z-index:20;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+ul.tight{margin:6px 0;padding-left:20px}ul.tight li{margin:5px 0}
+.intro>.layout{grid-column:1/-1}
+.layout{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}.layout .lead{margin:4px 0 10px;max-width:90ch}
+.figw{overflow-x:auto;margin:8px 0}.figw svg{display:block;width:100%;min-width:860px;height:auto;font-family:var(--f)}
+.figw .lane{fill:var(--sub)}.figw .box{fill:var(--card);stroke:var(--line);stroke-width:1.5}.figw .box.hi{stroke:var(--bar);stroke-width:2.5}
+.figw text{fill:var(--ink)}.figw .ln{font-size:15px;font-weight:700;fill:var(--head)}.figw .gl{font-size:13px;font-weight:700;fill:var(--teal);letter-spacing:.03em}
+.figw .bt{font-size:13px}.figw .b{font-size:15px;font-weight:700}.figw .st{font-size:13px;fill:var(--mut)}
+.figw .grp{stroke:var(--teal);stroke-width:2}.figw .ar{stroke:var(--bar);stroke-width:2}.figw .ah{fill:var(--bar)}
+.figw .ng,.figw .ngs{stroke:var(--amber);stroke-width:2;stroke-dasharray:5 4}.figw .aha{fill:var(--amber)}.figw .nl{font-size:14px;font-weight:700;fill:var(--amberH)}
+.figw .dt{stroke:var(--mut);stroke-width:2;stroke-dasharray:2 4}
+.figw .okb{fill:var(--teal)}.figw .scb{fill:var(--amber)}.figw .wt{fill:#fff;font-size:14px;font-weight:700}.figw .at{fill:var(--amber-ink);font-size:14px;font-weight:700}
+.figw .mk{fill:var(--amber)}.figw .mt{fill:var(--amber-ink);font-size:14px;font-weight:800}
+.legend{counter-reset:l;list-style:none;padding:0;margin:10px 0 0;display:grid;gap:10px}
+.legend li{counter-increment:l;position:relative;padding-left:38px;font-size:15.5px;line-height:1.55}
+.legend li::before{content:counter(l);position:absolute;left:0;top:1px;width:26px;height:26px;border-radius:50%;background:var(--amber);color:var(--amber-ink);font-weight:800;font-size:14px;display:grid;place-items:center}
+@media (min-width:1000px){.legend{grid-template-columns:repeat(4,1fr);gap:16px}}
+.kpi{--h:var(--navyH);background:color-mix(in srgb,var(--h) 11%,var(--card));border-color:color-mix(in srgb,var(--h) 35%,var(--card))}
+.kpi .v{color:var(--h)}.kpi .l{color:var(--ink)}.kpi .d{color:var(--mut)}
+.q[data-p="M"]{background:color-mix(in srgb,var(--amber) 13%,var(--card));border-color:color-mix(in srgb,var(--amber) 60%,var(--card))}
+.q[data-p="S"]{background:color-mix(in srgb,var(--skyH) 9%,var(--card));border-color:color-mix(in srgb,var(--skyH) 35%,var(--card))}
+.q[data-p="N"]{border-style:dashed}
+.q[data-p="M"] .id{color:var(--amberH)}.q[data-p="S"] .id{color:var(--skyH)}.q[data-p="N"] .id{color:var(--mut)}
+.pri.S{background:var(--skyH);border-color:var(--skyH);color:var(--onph)}
+.fbar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:12px 0 4px}.fbar span{font-size:var(--small);font-weight:700;color:var(--mut);margin-right:2px}
+.fb{font:inherit;font-size:var(--small);font-weight:700;cursor:pointer;border-radius:999px;padding:6px 14px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.fb i{font-style:normal;opacity:.7;margin-left:4px}.fb:hover{border-color:var(--bar)}.fb:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.fb.on{background:var(--navy);border-color:var(--navy);color:#fff}.fb.on[data-f="M"]{background:var(--amber);border-color:var(--amber);color:var(--amber-ink)}.fb.on[data-f="S"]{background:var(--skyH);border-color:var(--skyH);color:var(--onph)}
+.defs p{margin:0 0 12px}.defs p:last-child{margin:0}
+.fx{display:inline-block;margin:2px 0;padding:1px 9px;border-radius:8px;background:color-mix(in srgb,var(--tealH) 12%,var(--card));border:1px solid color-mix(in srgb,var(--tealH) 40%,var(--card));color:var(--tealH);font-weight:700;font-size:15px;white-space:normal}
+.figw.fl svg{min-width:520px;max-width:1000px;margin:0 auto}.flowfull .card{padding:20px 24px}.flowfull .card>p{text-align:center;margin:12px 0 0}.figw .dia{fill:var(--sub);stroke:var(--bar);stroke-width:2}.figw .b2{font-size:14px;font-weight:700}
+.figw .arT{fill:none;stroke:var(--teal);stroke-width:2}.figw .aht{fill:var(--teal)}.figw .arA{fill:none;stroke:var(--amber);stroke-width:2}.figw .aha2{fill:var(--amber)}
+.figw .lt{font-size:13px;font-weight:700;fill:var(--tealH)}.figw .la{font-size:13px;font-weight:700;fill:var(--amberH)}
+.ph .phase{color:var(--ph);font-size:13.5px}
+.ph .steps li{background:color-mix(in srgb,var(--ph) 8%,var(--card));border-color:color-mix(in srgb,var(--ph) 32%,var(--card))}
+.ph .steps li::before,.ph .steps li.L::before{background:var(--ph);color:var(--onph)}
+.ph .steps b.t{color:var(--ink)}
+.steps li.L::after{content:"beban besar";position:absolute;right:12px;top:12px;font-size:11.5px;font-weight:700;letter-spacing:.03em;padding:1px 8px;border-radius:999px;border:1px solid var(--ph,var(--amber));color:var(--ph,var(--amber))}
+.steps li.L b.t{padding-right:84px}
+.banner{background:linear-gradient(120deg,#1A73E8,#4285F4)}
+h2{border-bottom:3px solid transparent;border-image:linear-gradient(90deg,var(--gb) 0 60px,var(--line) 60px) 1}
+nav a:nth-child(4n+1):hover{background:var(--gb);border-color:var(--gb);color:#fff}nav a:nth-child(4n+2):hover{background:var(--gr);border-color:var(--gr);color:#fff}nav a:nth-child(4n+4):hover{background:var(--gg);border-color:var(--gg);color:#fff}
+.callout.g{background:#E6F4EA;color:#0D652D;border:1px solid #A8DAB5}.callout.g h4{color:#137333}
+.callout.a{background:#FEF7E0;color:#3C2A00;border:1px solid #FDD663}
+.outs{display:grid;gap:12px;margin:12px 0}.outs .card{margin:0}
+.out{--h:var(--navyH);border-top:4px solid var(--h)}
+.out .oh{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}.out .oh b{font-size:var(--h3);color:var(--h);line-height:1.3}
+.ob{flex:none;border-radius:999px;padding:1px 9px;font-size:var(--label);font-weight:700;background:var(--amber);color:var(--amber-ink)}.ob.opt{background:var(--sub);border:1px solid var(--line);color:var(--mut)}
+.out ul{margin:8px 0 0;padding-left:18px;font-size:15px;line-height:1.5}.out li{margin:4px 0}
+.out li:nth-last-child(-n+2){color:var(--mut);font-size:14px}
+@media (min-width:700px){.outs{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1280px){.outs{grid-template-columns:repeat(4,1fr)}}
+.tag.c1{background:#188038;color:#fff}.tag.c2{background:#9334E6;color:#fff}.tag.c3{background:#D93025;color:#fff}.tag.c4{background:#fff;color:#1A73E8}
+.sample td:first-child{white-space:nowrap}.src{border-top:1px dashed var(--line);padding-top:8px;font-size:15px}.src code{font-size:13.5px;background:var(--soft);padding:1px 6px;border-radius:6px}.note{font-size:13px;color:var(--mut);margin:6px 0 0}
+.wf{display:grid;gap:4px}
+.wl{--c:var(--navyH);position:relative;background:color-mix(in srgb,var(--c) 8%,var(--card));border:1px solid color-mix(in srgb,var(--c) 30%,var(--card));border-radius:14px;padding:10px 12px 12px}
+.wl h4{margin:0 0 10px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--c)}
+.ws{display:grid;gap:22px}
+.wb{position:relative;background:var(--card);border:2px solid var(--c);border-radius:12px;padding:10px 12px 10px 52px;min-height:62px}
+.wb .n{position:absolute;left:12px;top:12px;width:30px;height:30px;border-radius:50%;background:var(--c);color:var(--onph);font-weight:800;font-size:14px;display:grid;place-items:center}
+.wb b{display:block;font-size:15px;line-height:1.3}.wb .s{display:block;font-size:13px;color:var(--mut);margin-top:2px}
+.wb.L::before{content:"beban besar";position:absolute;top:-10px;right:10px;background:var(--amber);color:var(--amber-ink);font-size:11px;font-weight:700;padding:0 8px;border-radius:999px;line-height:18px}
+.wb:not(:last-child)::after{content:"↓";position:absolute;left:50%;bottom:-21px;transform:translateX(-50%);color:var(--c);font-weight:800;font-size:16px;line-height:1}
+.wa{text-align:center;font-weight:800;font-size:20px;color:var(--mut);line-height:1.2}
+.wrow,.wrow1{display:grid;gap:4px}
+.wrow>.wl:first-child{margin-bottom:24px}.wrow>.wl:first-child::after{content:"↓";position:absolute;left:50%;bottom:-24px;transform:translateX(-50%);font-weight:800;font-size:20px;color:var(--mut)}
+@media (min-width:1200px){
+.wrow{grid-template-columns:2fr 3fr;gap:30px}.wrow>.wl:first-child{margin-bottom:0}.wrow>.wl:first-child::after{content:"→";left:auto;right:-24px;bottom:auto;top:50%;transform:translateY(-50%)}
+.wrow1{grid-template-columns:2fr 3fr}
+.ws{grid-template-columns:repeat(var(--k),1fr);gap:26px}
+.wb:not(:last-child)::after{content:"→";left:auto;right:-25px;bottom:auto;top:50%;transform:translateY(-50%)}
+.wl{padding-left:8px;padding-right:8px}.ws{gap:34px}
+.wrow,.wrow1{gap:16px}.wrow>.wl:first-child::after{right:-14px;font-size:16px}
+}
+.docs code{font-size:13.5px;background:var(--soft);padding:1px 6px;border-radius:6px;white-space:nowrap}.docs td:nth-child(3){white-space:nowrap}
+/* layar lebar: nav jadi sidebar, konten dibagi kolom */
+.two{display:grid;gap:0 24px;align-items:start}.two>*{min-width:0}
+.qgrid{display:grid;gap:0 12px}.qgrid>*{min-width:0}
+@media (min-width:1000px){
+main{max-width:1480px}
+.two,.qgrid{grid-template-columns:1fr 1fr}.qgrid .theme{grid-column:1/-1}
+.kpis{grid-template-columns:repeat(6,1fr)}.tools{grid-template-columns:repeat(3,1fr)}
+.intro{display:grid;grid-template-columns:1fr 1fr;column-gap:28px;align-items:start}.intro h3{grid-column:1/-1}.intro>p{grid-column:1}.intro>.scroll{grid-column:2;grid-row:2/span 3;margin-top:8px}
+.phases{display:grid;grid-template-columns:repeat(2,1fr);gap:0 24px}.phases>*{min-width:0}
+}
+@media (min-width:1280px){
+main{display:grid;grid-template-columns:190px minmax(0,1fr);column-gap:32px}
+main>*{grid-column:2}
+main>nav{grid-column:1;grid-row:1/span 60;align-self:start;flex-direction:column;padding-top:16px}
+main>nav a{border-radius:10px;font-size:15px;padding:8px 14px}
+.phases{grid-template-columns:repeat(4,1fr)}
+}
+@media (max-width:620px){.kpis,.res{grid-template-columns:1fr 1fr}.tools{grid-template-columns:1fr}.row .n{width:78px}.banner{padding:18px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.row .b{transition:none}}
+.figw .box.warn{stroke:var(--amber);stroke-width:2.5}.figw .arA.dsh{stroke-dasharray:5 4}.figw .arB{fill:none;stroke:var(--bar);stroke-width:2}
+#bars .row .n{width:190px}#bars .row .g{position:absolute;left:0;top:0;bottom:0;border-radius:8px;background:color-mix(in srgb,var(--amber) 38%,var(--card))}
+#bars .row .b{background:var(--bar)}#bars .row.sel .b{background:var(--bar)}#bars .row.sel .n{color:var(--ink);font-weight:600}
+#bars .row .tg{width:118px;flex:none;font-size:12px;font-weight:700;text-align:center;border-radius:999px;padding:1px 6px;background:var(--sub);border:1px solid var(--line);color:var(--mut)}
+#bars .row.sel .tg{background:#E6F4EA;border-color:#A8DAB5;color:#0D652D}#bars .row.na{cursor:not-allowed}#bars .row.na .tg{background:#FEF7E0;border-color:#FDD663;color:#3C2A00}
+#bars.up .row{cursor:default}#bars.up .row .g{background:var(--bar);z-index:1}#bars.up .row .b{background:var(--teal)}
+.figw .lb{font-size:13px;font-weight:700;fill:var(--head)}
+.src a{color:var(--navy);font-weight:600}
+@media (min-width:1200px){.wa{display:grid;grid-template-columns:repeat(5,1fr);gap:34px;padding:0 9px}.wa.r span{grid-column:5}.wa.l span{grid-column:1}
+.ws.rev{direction:rtl}.ws.rev .wb{direction:ltr}.ws.rev .wb:not(:last-child)::after{content:"←";right:auto;left:-25px}}
+@media (max-width:620px){#bars .row{flex-wrap:wrap;gap:4px 8px}#bars .row .n{width:100%}#bars .row .tg{width:auto}}
+</style>
+</head><body>
+<a href="https://bagusbernadi.github.io/" style="display:inline-block;margin:12px 16px;font:600 14px/1.4 'Source Sans 3',Arial,sans-serif;color:#1A73E8;text-decoration:none">← All projects / Semua project</a>
+<main>
+<nav aria-label="Section navigation"><a href="#s1">Background</a><a href="#s2">Business Questions</a><a href="#s3">Skill Extraction &amp; Skill Match</a><a href="#s4">Dataset</a><a href="#s5">Tools</a><a href="#s6">Work Plan</a><a href="#s7">Project Outputs</a><a href="#s8">Success Criteria</a><a href="#s9">Assumptions &amp; Limitations</a></nav>
+
+<header class="banner"><h1>Project 31: Job Market Scraping &amp; Skill Demand Analysis</h1>
+<p class="goal"><b>Tujuan project:</b> membangun pipeline scraping mingguan yang mengumpulkan lowongan Data Analyst di Indonesia untuk menemukan skill, kota, industri, dan kisaran salary yang paling banyak diminta, sehingga prioritas belajar dan target lamaran bisa ditentukan berdasarkan data, bukan tebakan.</p>
+<div class="tags"><span class="tlab">Kategori:</span><span class="tag a">Rancangan project</span><span class="tag c1">Pasar kerja</span><span class="tag c2">Data hasil scraping</span><span class="tag c3">Pipeline + SQL + dashboard</span></div></header>
+
+<section class="card intro">
+<h3>Project Introduction</h3>
+<p>Bayangkan seorang pedagang yang ingin tahu barang apa yang paling dicari pembeli. Setiap minggu ia berkeliling pasar dan mencatat barang yang paling sering ditanyakan, harganya, dan di pasar mana barang itu laku. Setelah beberapa minggu, ia tahu barang mana yang sebaiknya ia stok lebih dulu.</p>
+<p>Pencari kerja menghadapi hal yang sama. Ratusan lowongan Data Analyst muncul setiap minggu, masing-masing dengan daftar skill yang berbeda. Membaca semuanya satu per satu memakan waktu dan hasilnya sering hanya kesan, bukan angka.</p>
+<div class="scroll"><table><tr><th>Di pasar</th><th>Di pasar kerja Data Analyst</th></tr>
+<tr><td>Berkeliling pasar setiap minggu</td><td>Scraping lowongan Jobstreet setiap minggu secara otomatis</td></tr>
+<tr><td>Barang yang paling sering ditanyakan</td><td>Skill yang paling sering muncul di job description (SQL, Python, Excel, BI)</td></tr>
+<tr><td>Harga yang tertera di lapak</td><td>Salary, yang hanya dicantumkan di sebagian lowongan</td></tr>
+<tr><td>Pasar di kota yang berbeda</td><td>Kota dan industri tempat lowongan dibuka</td></tr>
+<tr><td>Buku catatan yang rapi</td><td>Database berisi lowongan yang sudah dibersihkan</td></tr>
+<tr><td>Rekap barang terlaris</td><td>Dashboard skill, salary, kota, dan tren mingguan</td></tr>
+</table></div>
+<p>Project ini meng-upgrade project scraping lama menjadi <b>pipeline yang berjalan otomatis setiap minggu</b>. Kode dan data 2.560 postingan dari project lama ditelusuri ulang (reverse engineering) untuk memahami cara kerjanya, lalu dibangun ulang dengan cleaning, database, analisis SQL, dan dashboard. Kata bergaris bawah putus-putus kuning bisa diklik untuk melihat artinya.</p>
+<div class="layout">
+<h3>Gambaran alur kerja mencari skill yang dibutuhkan</h3>
+<p class="lead">Prosesnya bisa dibayangkan sebagai tiga jalur. Jalur pertama adalah cara pencari kerja membaca lowongan. Jalur kedua adalah masalah pada data lowongan mentah. Jalur ketiga adalah yang dibangun di project ini.</p>
+<div class="figw"><svg viewBox="0 0 1240 434" role="img" aria-label="Alur kerja: cara manual membaca lowongan, masalah data lowongan mentah, dan pipeline scraping mingguan menuju database dan dashboard"><defs><marker id="mN" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0 0L10 5L0 10z"/></marker><marker id="mT" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="aht" d="M0 0L10 5L0 10z"/></marker></defs><rect class="lane" x="0" y="8" width="1240" height="130" rx="14"/><rect class="lane" x="0" y="150" width="1240" height="140" rx="14"/><rect class="lane" x="0" y="302" width="1240" height="130" rx="14"/>
+<text class="ln" x="16" y="78">Cara</text><text class="ln" x="16" y="96">manual</text>
+<text class="ln" x="16" y="218">Data</text><text class="ln" x="16" y="236">mentah</text>
+<text class="ln" x="16" y="362">Jalur data</text><text class="ln" x="16" y="380">baru</text>
+<rect class="box" x="120" y="52" width="200" height="60" rx="10"/><text class="bt b" x="220" y="78" text-anchor="middle">Buka Jobstreet</text><text class="st" x="220" y="98" text-anchor="middle">cari &quot;Data Analyst&quot;</text><line class="ar" x1="320" x2="366" y1="82" y2="82" marker-end="url(#mN)"/><rect class="box" x="370" y="52" width="200" height="60" rx="10"/><text class="bt b" x="470" y="78" text-anchor="middle">Baca puluhan lowongan</text><text class="st" x="470" y="98" text-anchor="middle">satu per satu</text><line class="ar" x1="570" x2="616" y1="82" y2="82" marker-end="url(#mN)"/><rect class="box" x="620" y="52" width="200" height="60" rx="10"/><text class="bt b" x="720" y="78" text-anchor="middle">Catat skill manual</text><text class="st" x="720" y="98" text-anchor="middle">hanya lowongan yang dibaca</text><line class="ar" x1="820" x2="866" y1="82" y2="82" marker-end="url(#mN)"/><rect class="box warn" x="870" y="52" width="240" height="60" rx="10"/><text class="bt b" x="990" y="78" text-anchor="middle">Tebak prioritas</text><text class="st" x="990" y="98" text-anchor="middle">belajar dan lamaran</text>
+<line class="dt" x1="170" x2="170" y1="116" y2="192" marker-end="url(#mN)"/><text class="st" x="182" y="176">lowongan yang sama diambil dalam bentuk mentah</text>
+<rect class="box" x="120" y="196" width="200" height="62" rx="10"/><text class="bt b" x="220" y="222" text-anchor="middle">Lowongan ganda</text><text class="st" x="220" y="242" text-anchor="middle">diposting ulang</text><line class="ar" x1="320" x2="366" y1="227" y2="227" marker-end="url(#mN)"/><rect class="box" x="370" y="196" width="200" height="62" rx="10"/><text class="bt b" x="470" y="222" text-anchor="middle">Salary teks bebas</text><text class="st" x="470" y="242" text-anchor="middle">&quot;8–12 jt&quot;, &quot;IDR 10.000.000&quot;</text><line class="ar" x1="570" x2="616" y1="227" y2="227" marker-end="url(#mN)"/><rect class="box" x="620" y="196" width="200" height="62" rx="10"/><text class="bt b" x="720" y="222" text-anchor="middle">Jabatan dan lokasi</text><text class="st" x="720" y="242" text-anchor="middle">ditulis berbeda-beda</text><line class="ar" x1="820" x2="866" y1="227" y2="227" marker-end="url(#mN)"/><rect class="box warn" x="870" y="196" width="240" height="62" rx="10"/><text class="bt b" x="990" y="222" text-anchor="middle">Hitungan keliru</text><text class="st" x="990" y="242" text-anchor="middle">jika langsung dihitung</text>
+<line class="arT" x1="220" x2="220" y1="262" y2="336" marker-end="url(#mT)"/><text class="lt" x="232" y="322">diolah otomatis oleh pipeline</text>
+<rect class="box hi" x="120" y="340" width="200" height="62" rx="10"/><text class="bt b" x="220" y="366" text-anchor="middle">Scraper mingguan</text><text class="st" x="220" y="386" text-anchor="middle">GitHub Actions</text><line class="ar" x1="320" x2="366" y1="371" y2="371" marker-end="url(#mN)"/><rect class="box hi" x="370" y="340" width="200" height="62" rx="10"/><text class="bt b" x="470" y="366" text-anchor="middle">Cleaning + skill</text><text class="st" x="470" y="386" text-anchor="middle">salary, kota, kamus skill</text><line class="ar" x1="570" x2="616" y1="371" y2="371" marker-end="url(#mN)"/><rect class="box hi" x="620" y="340" width="200" height="62" rx="10"/><text class="bt b" x="720" y="366" text-anchor="middle">DuckDB + SQL</text><text class="st" x="720" y="386" text-anchor="middle">CTE, window function</text><line class="ar" x1="820" x2="866" y1="371" y2="371" marker-end="url(#mN)"/><rect class="box hi" x="870" y="340" width="240" height="62" rx="10"/><text class="bt b" x="990" y="366" text-anchor="middle">Dashboard</text><text class="st" x="990" y="386" text-anchor="middle">Streamlit + Plotly</text>
+<line class="grp" x1="120" x2="1110" y1="410" y2="410"/><text class="gl" x="615" y="426" text-anchor="middle">Bagian yang dibangun di project ini</text>
+<circle class="mk" cx="120" cy="52" r="13"/><text class="mt" x="120" y="57" text-anchor="middle">1</text>
+<circle class="mk" cx="120" cy="196" r="13"/><text class="mt" x="120" y="201" text-anchor="middle">2</text>
+<circle class="mk" cx="120" cy="340" r="13"/><text class="mt" x="120" y="345" text-anchor="middle">3</text>
+<circle class="mk" cx="370" cy="340" r="13"/><text class="mt" x="370" y="345" text-anchor="middle">4</text>
+</svg></div>
+<ol class="legend">
+<li><b>Cara manual.</b> Pencari kerja membuka Jobstreet, membaca puluhan lowongan, lalu menebak skill mana yang paling penting. Hasilnya bergantung pada lowongan yang kebetulan dibaca.</li>
+<li><b>Data mentah bermasalah.</b> Lowongan yang sama bisa muncul berulang, salary ditulis dalam format bebas, dan nama jabatan serta lokasi ditulis berbeda-beda.</li>
+<li><b>Scraper mingguan.</b> Program mengambil lowongan baru setiap minggu secara otomatis dengan jeda yang sopan, lalu menyimpan data mentah apa adanya.</li>
+<li><b>Cleaning, database, dan dashboard.</b> Data dibersihkan, skill diambil dari job description, lalu disimpan di database dan ditampilkan di dashboard.</li>
+</ol>
+</div>
+</section>
+
+<div class="kpis">
+<div class="card kpi" style="--h:var(--navyH)"><span class="v">14</span><span class="l">pertanyaan analisis</span><span class="d">Hal yang ingin dijawab, 9 di antaranya prioritas utama (bagian 2).</span></div>
+<div class="card kpi" style="--h:var(--amberH)"><span class="v">5</span><span class="l">ukuran kinerja (KPI)</span><span class="d">Skill share, median salary, cakupan salary, skill match, dan volume mingguan (bagian 3).</span></div>
+<div class="card kpi" style="--h:var(--tealH)"><span class="v">12</span><span class="l">langkah pengerjaan</span><span class="d">Dari reverse engineering project lama sampai dashboard dan README (bagian 6).</span></div>
+<div class="card kpi" style="--h:var(--plumH)"><span class="v">2.560+</span><span class="l">postingan lowongan</span><span class="d">Data awal dari project lama, ditambah hasil scraping mingguan.</span></div>
+<div class="card kpi" style="--h:var(--roseH)"><span class="v">±12 minggu</span><span class="l">periode scraping baru</span><span class="d">Cukup untuk melihat tren mingguan skill dan jumlah lowongan.</span></div>
+<div class="card kpi" style="--h:var(--skyH)"><span class="v">4</span><span class="l">tabel data</span><span class="d">Data mentah, lowongan bersih, skill per lowongan, dan kamus skill (bagian 4).</span></div>
+</div>
+
+<h2 id="s1">1. Background<small>Kenapa tema ini dipilih</small></h2>
+<div class="card two">
+<div><h3>Latar belakang masalah</h3>
+<p>Saran tentang skill Data Analyst yang "paling dicari" biasanya berasal dari artikel umum atau pengalaman orang lain, bukan dari lowongan di Indonesia saat ini. Project scraping lama sudah mengumpulkan 2.560 postingan, tetapi hanya sekali jalan. Akibatnya:</p>
+<ul class="tight">
+<li>Tidak ada gambaran perubahan dari minggu ke minggu, karena data hanya diambil satu kali.</li>
+<li>Salary sulit dibandingkan karena ditulis dalam format bebas, misalnya "8–12 jt", "IDR 10.000.000", atau tidak dicantumkan sama sekali.</li>
+<li>Nama jabatan dan lokasi tidak seragam, sehingga hitungan per kota atau per level bisa keliru.</li>
+<li>Keputusan belajar skill berikutnya dan memilih kota target lamaran masih berdasarkan tebakan.</li>
+</ul></div>
+<div><h3>Alasan memilih tema ini sebagai portofolio</h3>
+<ul class="tight">
+<li><b>Data nyata yang relevan.</b> Datanya berasal dari lowongan sungguhan, dan hasilnya langsung dipakai untuk rencana switch career ke Data Analyst.</li>
+<li><b>Menunjukkan skill end-to-end.</b> Scraping, cleaning teks yang berantakan, database, SQL lanjutan (CTE, window function), otomatisasi terjadwal, dan dashboard.</li>
+<li><b>Tingkat kesulitan sulit.</b> Analisisnya deskriptif, tetapi parsing salary, normalisasi teks, dan pipeline terjadwal menambah tantangan teknis.</li>
+<li><b>Berdiri sendiri.</b> Tidak bergantung pada project lain, dan memakai pola DuckDB + Streamlit yang sama dengan project portofolio lainnya.</li>
+</ul></div>
+</div>
+
+<h2 id="s2">2. Business Questions<small>Satu pertanyaan utama, dipecah menjadi pertanyaan yang lebih kecil</small></h2>
+<div class="callout a"><h4>Pertanyaan utama</h4>Skill (SQL, Python, Excel, BI) dan kisaran salary apa yang paling banyak diminta pada lowongan Data Analyst di Indonesia, di kota dan industri mana, dan bagaimana trennya dari minggu ke minggu?</div>
+<p class="how">Pertanyaan utama dipecah per tema. Label "Utama" berarti wajib dijawab dan dikerjakan lebih dulu. "Pendukung" memperdalam hasil. "Tambahan" dikerjakan jika waktu tersisa. Teks abu-abu di bawah tiap pertanyaan adalah cara menjawabnya.</p>
+<div class="fbar" role="group" aria-label="Filter pertanyaan"><span>Tampilkan:</span><button type="button" class="fb on" data-f="*">Semua <i>14</i></button><button type="button" class="fb" data-f="M">Utama <i>9</i></button><button type="button" class="fb" data-f="S">Pendukung <i>4</i></button><button type="button" class="fb" data-f="N">Tambahan <i>1</i></button></div>
+<div class="qgrid" id="qg">
+<p class="theme">Skill yang diminta</p>
+<div class="q" data-p="M"><span class="id">Q1</span><span>Skill apa yang paling sering diminta di lowongan Data Analyst?<span class="pri M">Utama</span></span><span class="m">Persentase lowongan yang menyebut tiap skill</span></div>
+<div class="q" data-p="S"><span class="id">Q2</span><span>Kombinasi skill apa yang paling sering muncul bersamaan?<span class="pri S">Pendukung</span></span><span class="m">Pasangan skill terbanyak (co-occurrence)</span></div>
+<div class="q" data-p="S"><span class="id">Q3</span><span>Apakah skill yang diminta berbeda untuk level junior dan senior?<span class="pri S">Pendukung</span></span><span class="m">Skill share per level jabatan</span></div>
+
+<p class="theme">Salary</p>
+<div class="q" data-p="M"><span class="id">Q4</span><span>Berapa kisaran salary untuk lowongan yang meminta skill tertentu?<span class="pri M">Utama</span></span><span class="m">Median dan rentang salary per skill</span></div>
+<div class="q" data-p="M"><span class="id">Q5</span><span>Berapa kisaran salary di tiap kota dan industri?<span class="pri M">Utama</span></span><span class="m">Median salary per kota dan industri, dengan jumlah lowongan</span></div>
+<div class="q" data-p="M"><span class="id">Q6</span><span>Berapa persen lowongan yang mencantumkan salary, dan seberapa bias angka salary karenanya?<span class="pri M">Utama</span></span><span class="m">Cakupan salary per kota, industri, dan level</span></div>
+
+<p class="theme">Kota dan industri</p>
+<div class="q" data-p="M"><span class="id">Q7</span><span>Kota mana yang paling banyak membuka lowongan Data Analyst?<span class="pri M">Utama</span></span><span class="m">Jumlah lowongan per kota setelah normalisasi lokasi</span></div>
+<div class="q" data-p="M"><span class="id">Q8</span><span>Industri mana yang paling banyak mencari Data Analyst?<span class="pri M">Utama</span></span><span class="m">Jumlah lowongan per industri</span></div>
+<div class="q" data-p="N"><span class="id">Q9</span><span>Berapa persen lowongan yang menawarkan kerja remote atau hybrid?<span class="pri">Tambahan</span></span><span class="m">Kata kunci remote/hybrid di judul dan deskripsi</span></div>
+
+<p class="theme">Tren mingguan</p>
+<div class="q" data-p="M"><span class="id">Q10</span><span>Bagaimana tren jumlah lowongan dan permintaan skill dari minggu ke minggu?<span class="pri M">Utama</span></span><span class="m">Grafik mingguan, window function untuk perubahan antar minggu</span></div>
+<div class="q" data-p="S"><span class="id">Q11</span><span>Skill mana yang naik atau turun dibanding data 2.560 postingan dari project lama?<span class="pri S">Pendukung</span></span><span class="m">Selisih skill share data lama vs data baru</span></div>
+
+<p class="theme">Penerapan</p>
+<div class="q" data-p="M"><span class="id">Q12</span><span>Berapa persen lowongan yang bisa dilamar dengan skill yang dimiliki saat ini, dan skill apa yang paling menambah peluang jika dipelajari?<span class="pri M">Utama</span></span><span class="m">Skill match: lowongan dengan semua skill dimiliki ÷ total lowongan</span></div>
+
+<p class="theme">Validitas</p>
+<div class="q" data-p="M"><span class="id">Q13</span><span>Seberapa akurat pengambilan skill dari job description dibanding label manual?<span class="pri M">Utama</span></span><span class="m">Precision dan recall pada 100 lowongan sampel</span></div>
+<div class="q" data-p="S"><span class="id">Q14</span><span>Berapa banyak lowongan yang ganda atau diposting ulang, dan apakah hitungan berubah setelah dibersihkan?<span class="pri S">Pendukung</span></span><span class="m">Deteksi duplikat berdasarkan job ID, judul, perusahaan, dan tanggal</span></div>
+</div>
+
+<h2 id="s3">3. Skill Extraction &amp; Skill Match<span class="add">Komponen tambahan</span><small>Bagaimana skill diambil dari teks lowongan, dan bagaimana menghitung peluang melamar</small></h2>
+<p class="how">Skill tidak tersedia sebagai kolom di lowongan. Skill harus diambil dari teks job description dengan kamus kata kunci. Arahkan kursor atau klik kata yang diberi garis bawah kuning untuk melihat pengertian dan rumusnya.</p>
+<div class="flowfull"><h3>Alur pengambilan skill</h3>
+<div class="card"><div class="figw fl"><svg viewBox="0 0 640 262" role="img" aria-label="Diagram percabangan: teks job description dicocokkan dengan kamus skill; jika cocok skill ditandai dan masuk tabel skill, jika tidak kata dicek pada sampel lalu sinonim ditambahkan ke kamus"><defs><marker id="fN" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0 0L10 5L0 10z"/></marker><marker id="fT" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="aht" d="M0 0L10 5L0 10z"/></marker><marker id="fA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="aha2" d="M0 0L10 5L0 10z"/></marker></defs>
+<rect class="box" x="8" y="93" width="110" height="44" rx="10"/><text class="b2" x="63" y="120" text-anchor="middle">Job description</text>
+<line class="ar" x1="118" x2="146" y1="115" y2="115" marker-end="url(#fN)"/>
+<polygon class="dia" points="148,115 200,79 252,115 200,151"/><text class="b2" x="200" y="120" text-anchor="middle" style="font-size:13px">Keyword?</text>
+<polyline class="arT" points="200,79 200,32 286,32" marker-end="url(#fT)"/><text class="lt" x="208" y="62">Ya</text>
+<rect class="box" x="290" y="10" width="130" height="44" rx="10"/><text class="b2" x="355" y="37" text-anchor="middle">Add skill tag</text>
+<line class="arT" x1="420" x2="456" y1="32" y2="32" marker-end="url(#fT)"/>
+<rect class="okb" x="460" y="12" width="170" height="40" rx="20"/><text class="wt" x="545" y="37" text-anchor="middle">Skill table</text>
+<polyline class="arA" points="200,151 200,200 286,200" marker-end="url(#fA)"/><text class="la" x="208" y="180">Tidak</text>
+<rect class="scb" x="290" y="180" width="150" height="40" rx="20"/><text class="at" x="365" y="205" text-anchor="middle">No match</text>
+<line class="arA" x1="440" x2="466" y1="200" y2="200" marker-end="url(#fA)"/>
+<rect class="box" x="470" y="178" width="160" height="44" rx="10"/><text class="b2" x="550" y="205" text-anchor="middle">Review &amp; add synonym</text>
+<polyline class="arA dsh" points="550,222 550,248 63,248 63,141" marker-end="url(#fA)"/><text class="la" x="300" y="242" text-anchor="middle">kamus skill diperbarui</text>
+</svg></div>
+<p>Kata yang tidak dikenali dicek pada sampel, lalu sinonimnya ditambahkan ke kamus skill. Kamus yang sama dipakai untuk semua minggu agar hasilnya bisa dibandingkan.</p></div></div>
+
+<h3>Berapa banyak lowongan yang bisa dilamar</h3>
+<p class="how">Setiap batang adalah persentase lowongan yang meminta satu skill (angka contoh, bukan hasil dari data). Klik sebuah skill untuk menandainya sebagai skill yang sudah dikuasai. Slider mengatur berapa skill yang boleh kurang dari persyaratan lowongan. Hasil dihitung dari 400 lowongan contoh yang dibuat acak.</p>
+<div class="card"><div id="bars"></div>
+<div class="ctl"><label for="sl">Skill yang boleh kurang</label><input id="sl" type="range" min="0" max="2" value="0"><output id="slo" for="sl">0</output></div>
+<div class="res"><div>Skill dikuasai<b id="r1"></b></div><div>Lowongan bisa dilamar<b id="r2"></b></div><div>Skill berikutnya paling berguna<b id="r3"></b></div></div>
+<p id="ins" style="margin:12px 0 0;font-size:15.5px"></p></div>
+
+<h2 id="s4">4. Dataset<small>Lowongan nyata dari Jobstreet, dikumpulkan sendiri lewat scraping</small></h2>
+<div class="two"><div class="card">
+<p><b>Kenapa dataset ini?</b> Lowongan adalah sumber paling langsung untuk mengetahui apa yang diminta perusahaan. Data awal berasal dari project scraping lama yang ditelusuri ulang, lalu ditambah scraping mingguan. Data mentah tidak dipublikasikan karena mengikuti aturan situs. Yang dipublikasikan hanya tabel agregat.</p>
+<p><b>Ukuran:</b> 2.560 postingan dari project lama (angka dari daftar portofolio) ditambah perkiraan ±150–300 postingan baru per minggu selama ±12 minggu. Jumlah pastinya diverifikasi saat data dikumpulkan.</p>
+<p class="src"><b>Sumber data:</b> <a href="https://github.com/bagusbernadi/Web_scraping_and_Job_Analyze" target="_blank" rel="noopener">here</a> (Versi: 2.560 postingan dari project lama, struktur kolom dan periode scraping ditelusuri ulang dari kode dan file di repo; Tanggal akses: dicatat saat reverse engineering di Tahap A)</p>
+<p class="src"><b>Sumber data lanjutan:</b> <a href="https://id.jobstreet.com/" target="_blank" rel="noopener">here</a> (Versi: scraping mingguan, satu batch per minggu; Tanggal akses: dicatat otomatis di kolom scraped_at setiap batch)</p>
+</div>
+<div class="callout g"><h4>Hipotesis yang akan diuji (belum terbukti)</h4>
+<p>1. SQL dan Excel muncul di lebih dari 60% lowongan.</p>
+<p>2. Jakarta menyumbang lebih dari separuh lowongan.</p>
+<p>3. Kurang dari 30% lowongan mencantumkan salary.</p>
+<p>4. Python lebih sering diminta di level senior dibanding junior.</p>
+<p>5. Power BI lebih sering diminta dibanding Tableau.</p></div></div>
+
+<h3>Empat tabel yang akan dibuat</h3>
+<p class="how">Data disimpan dalam beberapa tabel yang saling terhubung lewat kolom job_id. Data mentah disimpan terpisah dari data bersih, sehingga aturan cleaning bisa diperbaiki dan dijalankan ulang kapan saja.</p>
+<div class="scroll"><table>
+<tr><th>Tabel</th><th>Isi (1 baris = …)</th><th>Kolom utama</th></tr>
+<tr><td><b>job_postings_raw</b></td><td>Satu hasil scraping halaman lowongan, apa adanya</td><td>job_id, scraped_at, title, company, location_raw, salary_raw, description, url</td></tr>
+<tr><td><b>job_postings</b></td><td>Satu lowongan unik yang sudah dibersihkan</td><td>job_id, title_norm, level, city, industry, salary_min, salary_max, posted_date, first_seen, last_seen</td></tr>
+<tr><td><b>job_skills</b></td><td>Satu skill yang ditemukan di satu lowongan</td><td>job_id, skill, match_type (kata kunci / sinonim)</td></tr>
+<tr><td><b>dim_skill</b></td><td>Satu skill di kamus skill (tabel referensi)</td><td>skill, category, synonyms</td></tr>
+</table></div>
+
+<div class="two"><div><h3>Contoh isi tabel job_postings</h3>
+<div class="scroll"><table class="sample"><tr><th>posted_date</th><th>title_norm</th><th>city</th><th>industry</th><th>salary_min</th><th>salary_max</th></tr>
+<tr><td>2026-10-12</td><td>Data Analyst</td><td>Jakarta</td><td>Perbankan</td><td>8.000.000</td><td>12.000.000</td></tr>
+<tr><td>2026-10-13</td><td>Junior Data Analyst</td><td>Surabaya</td><td>E-commerce</td><td>–</td><td>–</td></tr></table></div>
+<p class="note">Angka karangan, bukan data asli. Kolom level, first_seen, dan last_seen tidak ditampilkan agar tabel ringkas.</p></div>
+
+<div class="card"><p style="margin:0 0 6px"><b>Contoh skill di kamus</b> (usulan awal):</p>
+<span class="chip">SQL</span><span class="chip">Excel</span><span class="chip">Python</span><span class="chip">Power BI</span><span class="chip">Tableau</span><span class="chip">Looker Studio</span><span class="chip">Statistik</span><span class="chip">R</span><span class="chip">Google Sheets</span><span class="chip">Spark</span>
+<p style="margin:10px 0 4px"><b>Contoh normalisasi</b>: "Jakarta Selatan, DKI Jakarta" menjadi Jakarta; "Sr. Data Analyst" menjadi Senior Data Analyst; "IDR 8–12 jt/bulan" menjadi salary_min 8.000.000 dan salary_max 12.000.000; "MS Excel" dan "spreadsheet" dihitung sebagai Excel.</p></div></div>
+
+<h2 id="s5">5. Tools<small>Alat yang dipakai dan alasannya</small></h2>
+<div class="tools">
+<div class="card"><b>Python (Playwright, requests, pandas)</b><p class="r">Playwright membuka halaman lowongan seperti browser biasa, requests dipakai untuk halaman sederhana, dan pandas membersihkan data.</p><p class="alt">Kode lama ditelusuri dulu agar bagian yang masih berfungsi bisa dipakai ulang.</p></div>
+<div class="card"><b>Regex + kamus skill</b><p class="r">Mengambil skill dari job description dengan pola kata kunci dan daftar sinonim. Aturan sama untuk semua minggu.</p><p class="alt">Transparan dan mudah diperiksa. Tidak memakai LLM agar hasilnya konsisten dan gratis.</p></div>
+<div class="card"><b>DuckDB + SQL</b><p class="r">Database tempat semua tabel disimpan. SQL dipakai untuk analisis dengan CTE dan window function, misalnya perubahan skill share antar minggu.</p><p class="alt">Gratis, satu file, dan konsisten dengan project lain. Daftar portofolio menulis SQLite/PostgreSQL.</p></div>
+<div class="card"><b>GitHub Actions</b><p class="r">Menjalankan scraper otomatis setiap minggu dan menyimpan hasilnya, tanpa perlu menyalakan komputer.</p><p class="alt">Gratis untuk repositori publik dan mudah dipantau dari tab Actions.</p></div>
+<div class="card"><b>Streamlit + Plotly</b><p class="r">Dashboard interaktif: skill share, salary per skill dan kota, peta kota, tren mingguan, dan kalkulator skill match.</p><p class="alt">Semua tetap di Python. Daftar portofolio menyebut Looker Studio sebagai alternatif.</p></div>
+<div class="card"><b>GitHub + Markdown</b><p class="r">Menyimpan kode, kamus skill, tabel agregat, dan README berisi temuan dan rekomendasi.</p><p class="alt">Data mentah tidak di-commit, hanya agregat.</p></div>
+</div>
+
+<h2 id="s6">6. Work Plan<small>Setiap tahap punya warna sendiri. Label "beban besar" = langkah yang paling banyak memakan waktu</small></h2>
+<p class="how">Urutannya seperti memperbaiki mesin bekas: bongkar dulu untuk memahami cara kerjanya, ganti bagian yang aus, pasang ulang, lalu uji jalan secara rutin. Setiap langkah memakai hasil langkah sebelumnya.</p>
+<h3>Alur tahapan kerja</h3>
+<div class="card"><div class="wf">
+<div class="wrow"><div class="wl" style="--c:var(--navyH)"><h4>Tahap A · Perencanaan</h4><div class="ws" style="--k:2"><div class="wb"><span class="n">1</span><b>Reverse engineering project lama</b><span class="s">peta kode dan data</span></div><div class="wb"><span class="n">2</span><b>Cek aturan situs dan skema</b><span class="s">robots.txt · kamus data</span></div></div></div><div class="wl" style="--c:var(--tealH)"><h4>Tahap B · Menyiapkan data</h4><div class="ws" style="--k:3"><div class="wb L"><span class="n">3</span><b>Upgrade scraper</b><span class="s">data mentah</span></div><div class="wb L"><span class="n">4</span><b>Cleaning dan normalisasi</b><span class="s">Q6, Q14</span></div><div class="wb"><span class="n">5</span><b>Skill extraction dan load</b><span class="s">file DuckDB</span></div></div></div></div>
+<div class="wa r"><span>↓</span></div>
+<div class="wl" style="--c:var(--plumH)"><h4>Tahap C · Menghitung dan menganalisis</h4><div class="ws rev" style="--k:5"><div class="wb"><span class="n">6</span><b>Validasi skill extraction</b><span class="s">Q13</span></div><div class="wb"><span class="n">7</span><b>Query SQL analitik</b><span class="s">view KPI</span></div><div class="wb L"><span class="n">8</span><b>Analisis skill, salary, kota</b><span class="s">Q1–Q9</span></div><div class="wb"><span class="n">9</span><b>Skill match</b><span class="s">Q12</span></div><div class="wb"><span class="n">10</span><b>Jadwal mingguan dan tren</b><span class="s">Q10, Q11</span></div></div></div>
+<div class="wa l"><span>↓</span></div>
+<div class="wrow1"><div class="wl" style="--c:var(--roseH)"><h4>Tahap D · Menyajikan</h4><div class="ws" style="--k:2"><div class="wb L"><span class="n">11</span><b>Membuat dashboard</b><span class="s">link dashboard</span></div><div class="wb"><span class="n">12</span><b>README dan finalisasi</b><span class="s">repositori siap</span></div></div></div></div>
+</div>
+<p class="note" style="text-align:center;margin-top:12px">Panah menunjukkan urutan pengerjaan. Angka di kotak sama dengan nomor langkah di bawah.</p></div>
+
+<div class="phases"><div class="ph" style="--ph:var(--navyH)"><p class="phase">Tahap A · Perencanaan</p>
+<ol class="steps">
+<li><b class="t">Menelusuri ulang project lama (reverse engineering)</b><p>Membaca kode scraping, kolom data, dan file 2.560 postingan untuk mengetahui situs, halaman, periode, dan cara data diambil. Bagian yang masih berfungsi dicatat untuk dipakai ulang.</p><p class="meta">Hasil: peta kode dan catatan sumber data · Alat: Python, Markdown</p></li>
+<li><b class="t">Mengecek aturan situs dan merancang skema</b><p>Membaca robots.txt dan ketentuan situs, menetapkan jeda antar permintaan, lalu merancang 4 tabel dan kamus data.</p><p class="meta">Hasil: catatan etika scraping dan kamus data · Alat: Markdown</p></li>
+</ol></div>
+<div class="ph" style="--ph:var(--tealH)"><p class="phase">Tahap B · Menyiapkan data</p>
+<ol class="steps" start="3" style="counter-reset:s 2">
+<li class="L"><b class="t">Meng-upgrade scraper</b><p>Membangun ulang scraper dengan Playwright: jeda antar halaman, coba ulang saat gagal, dan penyimpanan data mentah per batch dengan tanggal scraping.</p><p class="meta">Hasil: skrip scraper dan data mentah · Alat: Playwright, requests</p></li>
+<li class="L"><b class="t">Membersihkan dan menormalisasi data</b><p>Parsing salary menjadi angka minimum dan maksimum, menyeragamkan kota, jabatan, dan level, serta menghapus lowongan ganda (Q6, Q14).</p><p class="meta">Hasil: data bersih dan log cleaning · Alat: pandas</p></li>
+<li><b class="t">Mengambil skill dan memuat ke database</b><p>Mencocokkan job description dengan kamus skill, lalu memuat semua tabel ke DuckDB. Data lama dan data baru disimpan dengan penanda sumber.</p><p class="meta">Hasil: file database · Alat: regex, DuckDB</p></li>
+</ol></div>
+<div class="ph" style="--ph:var(--plumH)"><p class="phase">Tahap C · Menghitung dan menganalisis</p>
+<ol class="steps" style="counter-reset:s 5">
+<li><b class="t">Memvalidasi skill extraction</b><p>Memberi label manual pada 100 lowongan sampel, lalu menghitung precision dan recall. Kamus skill diperbaiki sampai hasilnya memenuhi target (Q13).</p><p class="meta">Hasil: tabel evaluasi · Alat: pandas</p></li>
+<li><b class="t">Menulis query SQL analitik</b><p>Membuat view untuk skill share, median salary, cakupan salary, dan perubahan mingguan dengan CTE dan window function.</p><p class="meta">Hasil: kumpulan query dan view · Alat: SQL</p></li>
+<li class="L"><b class="t">Menganalisis skill, salary, kota, dan industri</b><p>Menjawab Q1–Q9: skill teratas, kombinasi skill, perbedaan level, salary per skill, kota, dan industri, serta porsi remote atau hybrid.</p><p class="meta">Hasil: grafik dan tabel temuan · Alat: SQL, Plotly</p></li>
+<li><b class="t">Menghitung skill match</b><p>Menghitung persentase lowongan yang bisa dilamar dengan skill saat ini dan skill berikutnya yang paling menambah peluang (Q12). Diberi label estimasi.</p><p class="meta">Hasil: tabel skill match · Alat: pandas</p></li>
+<li><b class="t">Menjadwalkan scraping mingguan dan membaca tren</b><p>GitHub Actions menjalankan scraper setiap minggu. Setelah beberapa minggu, tren jumlah lowongan dan skill dibandingkan dengan data lama (Q10, Q11).</p><p class="meta">Hasil: workflow terjadwal dan grafik tren · Alat: GitHub Actions, SQL</p></li>
+</ol></div>
+<div class="ph" style="--ph:var(--roseH)"><p class="phase">Tahap D · Menyajikan</p>
+<ol class="steps" style="counter-reset:s 10">
+<li class="L"><b class="t">Membuat dashboard</b><p>Dashboard 4 halaman: Ringkasan, Skill, Salary &amp; Lokasi, dan Skill Match. Dilengkapi filter minggu, kota, level, dan industri.</p><p class="meta">Hasil: link dashboard · Alat: Streamlit, Plotly</p></li>
+<li><b class="t">Menulis README, rekomendasi, dan finalisasi</b><p>Menulis temuan, prioritas skill yang dipelajari, kota dan industri target lamaran, batasan data salary, dan catatan etika scraping.</p><p class="meta">Hasil: repositori GitHub siap ditinjau · Alat: Markdown, GitHub</p></li>
+</ol></div></div>
+
+<h2 id="s7">7. Project Outputs<span class="add">Komponen tambahan</span><small>Hasil nyata yang bisa dibuka, dibaca, atau dipakai ulang setelah project selesai</small></h2>
+<p class="how">Setiap kartu adalah satu output. Label "Utama" berarti wajib dibuat, "Opsional" dibuat jika waktu tersisa. Setiap output ditujukan untuk pembaca yang berbeda.</p>
+<div class="outs"><div class="card out" style="--h:var(--navyH)"><div class="oh"><b>Dashboard pasar kerja</b><span class="ob">Utama</span></div><ul><li>4 halaman: Ringkasan, Skill, Salary &amp; Lokasi, dan Skill Match.</li><li>Filter minggu, kota, level, dan industri.</li><li>Bentuk: link publik (Streamlit Community Cloud).</li><li>Untuk: pencari kerja dan recruiter yang ingin melihat gambaran pasar.</li></ul></div><div class="card out" style="--h:var(--roseH)"><div class="oh"><b>Scraper terjadwal</b><span class="ob">Utama</span></div><ul><li>Scraper dengan jeda sopan, coba ulang otomatis, dan log setiap batch.</li><li>Berjalan setiap minggu lewat GitHub Actions.</li><li>Bentuk: skrip .py dan workflow .yml.</li><li>Untuk: reviewer teknis yang menilai pipeline data.</li></ul></div><div class="card out" style="--h:var(--tealH)"><div class="oh"><b>Database &amp; query SQL</b><span class="ob">Utama</span></div><ul><li>4 tabel di DuckDB dan view analitik dengan CTE dan window function.</li><li>Bisa dibuat ulang dari data mentah.</li><li>Bentuk: folder sql/ dan skrip load.</li><li>Untuk: analis lain yang ingin memakai ulang pipeline.</li></ul></div><div class="card out" style="--h:var(--plumH)"><div class="oh"><b>Kamus skill &amp; aturan normalisasi</b><span class="ob">Utama</span></div><ul><li>Daftar skill, sinonim, aturan kota, jabatan, level, dan parsing salary.</li><li>Dilengkapi hasil evaluasi precision dan recall.</li><li>Bentuk: file CSV dan Markdown.</li><li>Untuk: siapa pun yang ingin menganalisis lowongan sejenis.</li></ul></div><div class="card out" style="--h:var(--skyH)"><div class="oh"><b>Notebook analisis</b><span class="ob">Utama</span></div><ul><li>Analisis Q1–Q14 dengan grafik dan penjelasan singkat.</li><li>Mencatat cleaning, validasi, dan perbandingan data lama vs baru.</li><li>Bentuk: Jupyter Notebook (.ipynb).</li><li>Untuk: pembaca teknis yang ingin melihat cara angka dihitung.</li></ul></div><div class="card out" style="--h:var(--amberH)"><div class="oh"><b>Laporan temuan &amp; rekomendasi</b><span class="ob">Utama</span></div><ul><li>Skill prioritas, kota dan industri target, kisaran salary, dan batasannya.</li><li>Angka skill match diberi label estimasi.</li><li>Bentuk: README di GitHub.</li><li>Untuk: semua pembaca, sebagai pintu masuk project.</li></ul></div><div class="card out" style="--h:var(--navyH)"><div class="oh"><b>Tabel agregat publik</b><span class="ob">Utama</span></div><ul><li>Skill share, salary, dan jumlah lowongan per minggu, kota, dan industri.</li><li>Tanpa data mentah dan tanpa teks lowongan.</li><li>Bentuk: file CSV di repositori.</li><li>Untuk: pembaca yang ingin memeriksa angka tanpa menjalankan kode.</li></ul></div><div class="card out" style="--h:var(--tealH)"><div class="oh"><b>One-sheet skill prioritas</b><span class="ob opt">Opsional</span></div><ul><li>Satu halaman: 5 skill teratas, kota teratas, dan kisaran salary.</li><li>Bentuk: PDF atau PNG.</li><li>Untuk: dibagikan di LinkedIn atau saat wawancara.</li></ul></div></div>
+
+<h3>Daftar dokumen yang akan dihasilkan</h3>
+<p class="how">Nama file adalah usulan awal dan bisa disesuaikan. Tabel diurutkan menurut tahap pengerjaan (A sampai D). Data mentah dan file database tidak di-commit ke GitHub.</p>
+<div class="scroll"><table class="docs"><tr><th>Nama dokumen</th><th>Isi</th><th>Tahap</th><th>Label</th></tr>
+<tr><td><code>docs/reverse_engineering.md</code></td><td>Peta kode project lama, sumber data, periode, dan bagian yang dipakai ulang</td><td>Tahap A</td><td><span class="ob">Utama</span></td></tr>
+<tr><td><code>docs/scraping_ethics.md</code></td><td>Catatan robots.txt, ketentuan situs, jeda permintaan, dan kebijakan data</td><td>Tahap A</td><td><span class="ob">Utama</span></td></tr>
+<tr><td><code>docs/data_dictionary.md</code></td><td>Kamus data dan hubungan 4 tabel</td><td>Tahap A</td><td><span class="ob">Utama</span></td></tr>
+<tr><td><code>scraper/scrape_jobs.py</code></td><td>Skrip scraper</td><td>Tahap B</td><td><span class="ob">Utama</span></td></tr>
+<tr><td><code>data/raw/</code></td><td>Data mentah per batch. Tidak di-commit</td><td>Tahap B</td><td><span class="ob">Utama</span></td></tr>
+<tr><td><code>scripts/clean.py</code></td><td>Parsing salary, normalisasi, dan hapus duplikat</td><td>Tahap B</td><td><span class="ob">Utama</span></td></tr>
+<tr><td><code>config/skills.csv</code></td><td>Kamus skill dan sinonim</td><td>Tahap B</td><td><span class="ob">Utama</span></td></tr>
+<tr><td><code>scripts/load_db.py</code></td><td>Skill extraction dan load ke DuckDB</td><td>Tahap B</td><td><span class="ob">Utama</span></td></tr>
+<tr><td><code>jobs.duckdb</code></td><td>File database. Tidak di-commit, dibuat ulang dari skrip</td><td>Tahap B</td><td><span class="ob">Utama</span></td></tr>
+<tr><td><code>outputs/skill_eval.csv</code></td><td>Precision dan recall skill extraction</td><td>Tahap C</td><td><span class="ob">Utama</span></td></tr>
+<tr><td><code>sql/</code></td><td>Query dan view analitik</td><td>Tahap C</td><td><span class="ob">Utama</span></td></tr>
+<tr><td><code>notebooks/analysis.ipynb</code></td><td>Analisis Q1–Q14 dengan grafik</td><td>Tahap C</td><td><span class="ob">Utama</span></td></tr>
+<tr><td><code>outputs/aggregates/*.csv</code></td><td>Tabel agregat publik</td><td>Tahap C</td><td><span class="ob">Utama</span></td></tr>
+<tr><td><code>.github/workflows/weekly_scrape.yml</code></td><td>Jadwal scraping mingguan</td><td>Tahap C</td><td><span class="ob">Utama</span></td></tr>
+<tr><td><code>dashboard/app.py</code></td><td>Aplikasi dashboard Streamlit (4 halaman)</td><td>Tahap D</td><td><span class="ob">Utama</span></td></tr>
+<tr><td><code>requirements.txt</code></td><td>Daftar library Python yang dibutuhkan</td><td>Tahap D</td><td><span class="ob">Utama</span></td></tr>
+<tr><td><code>README.md</code></td><td>Temuan, rekomendasi, batasan, dan cara menjalankan</td><td>Tahap D</td><td><span class="ob">Utama</span></td></tr>
+<tr><td><code>index.html</code></td><td>Halaman rancangan project ini (GitHub Pages)</td><td>Tahap D</td><td><span class="ob">Utama</span></td></tr>
+<tr><td><code>outputs/skill_onesheet.pdf</code></td><td>One-sheet skill prioritas</td><td>Tahap D</td><td><span class="ob opt">Opsional</span></td></tr>
+</table></div>
+
+<h2 id="s8">8. Success Criteria<span class="add">Komponen tambahan</span><small>Kapan project dianggap selesai dan berhasil</small></h2>
+<div class="card"><h3>Project dianggap berhasil jika</h3>
+<ul class="tight">
+<li>Kesembilan pertanyaan berlabel "Utama" terjawab dengan angka dari data.</li>
+<li>Skill extraction mencapai precision dan recall minimal 90% pada 100 lowongan sampel berlabel manual.</li>
+<li>Scraper mingguan berjalan minimal 4 minggu berturut-turut tanpa gagal, dan aturan situs dipatuhi.</li>
+<li>Angka dari SQL sama dengan hitungan pandas pada sampel yang dicek, dan kelima hipotesis tercatat sebagai terbukti atau tidak terbukti.</li>
+<li>Orang awam bisa membuka dashboard dan menyebutkan 3 skill teratas dan kota teratas dalam waktu kurang dari 1 menit.</li>
+<li>Checklist standar terpenuhi: pertanyaan bisnis, data cleaning, analisis SQL, dashboard ter-deploy, README berisi insight dan rekomendasi.</li>
+</ul></div>
+
+<h2 id="s9">9. Assumptions &amp; Limitations<span class="add">Komponen tambahan</span><small>Keputusan yang sudah diambil dan hal yang perlu diwaspadai</small></h2>
+<div class="two"><div><details open><summary>Sumber data: reverse engineering project lama <span class="pill">Sudah Anda setujui</span></summary><p>Data 2.560 postingan dan cara pengambilannya ditelusuri ulang dari kode dan file di repo lama, lalu dilanjutkan dengan scraping mingguan. Periode dan situs sumber data lama ditulis setelah penelusuran selesai.</p></details>
+<details><summary>Tools: DuckDB + Streamlit + Plotly <span class="pill">Sudah Anda setujui</span></summary><p>Konsisten dengan project lain. Kolom Tools di daftar portofolio menulis SQLite/PostgreSQL dan Looker Studio / Streamlit, sehingga kolom itu sebaiknya diperbarui.</p></details></div>
+<div><details><summary>Ruang lingkup <span class="pill d">Usulan awal</span></summary><p>Lowongan di Indonesia dengan judul mengandung "Data Analyst", "Business Intelligence Analyst", atau "Reporting Analyst". Satu platform (Jobstreet), ±12 minggu. Skill diambil dengan kamus kata kunci, tanpa LLM.</p></details>
+<details><summary>Hal yang perlu diwaspadai <span class="pill d">Usulan awal</span></summary>
+<p><b>Aturan situs.</b> Scraping hanya dilakukan jika diizinkan robots.txt dan ketentuan situs. Data mentah tidak dipublikasikan.</p>
+<p><b>Salary bias.</b> Sebagian besar lowongan tidak mencantumkan salary. Angka salary hanya mewakili lowongan yang mencantumkannya, dan selalu ditampilkan bersama jumlah lowongan.</p>
+<p><b>Satu platform.</b> Jobstreet belum tentu mewakili seluruh pasar kerja. Lowongan di LinkedIn atau situs perusahaan tidak ikut terhitung.</p>
+<p><b>Disebut belum tentu wajib.</b> Skill yang tertulis di deskripsi bisa berupa syarat wajib atau sekadar nilai tambah. Kamus tidak membedakannya.</p></details></div></div>
+</main>
+
+
+<script>
+const $=id=>document.getElementById(id),pc=v=>Math.round(v*100)+'%';
+const S=[["SQL",.78],["Excel",.70],["Python",.55],["Statistik",.32],["Power BI",.42],["Tableau",.25],["Looker Studio",.12],["Spark",.08]];
+function mb(a){return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const rnd=mb(31),JOBS=[];for(let j=0;j<400;j++){let m=0;S.forEach((s,i)=>{if(rnd()<s[1])m|=1<<i});if(!m)m=1;JOBS.push(m)}
+const own=S.map((s,i)=>i<2);
+const bits=m=>{let c=0;while(m){c+=m&1;m>>=1}return c};
+const cov=(o,k)=>{const om=o.reduce((a,v,i)=>v?a|1<<i:a,0);return JOBS.filter(m=>bits(m&~om)<=k).length/JOBS.length};
+function draw(){const k=+$('sl').value,c=cov(own,k);$('slo').textContent=k;
+let best=null;S.forEach((s,i)=>{if(own[i])return;const o=own.slice();o[i]=true;const g=cov(o,k)-c;if(!best||g>best.g)best={i,g}});
+$('bars').innerHTML=S.map((s,i)=>`<button type="button" class="row${own[i]?' sel':''}" data-i="${i}" aria-pressed="${own[i]}"><span class="n">${s[0]}</span><span class="tr"><span class="b" style="width:${s[1]*100}%"></span></span><span class="c">${pc(s[1])}</span><span class="tg">${own[i]?'sudah dikuasai':'belum'}</span></button>`).join('');
+const n=own.filter(Boolean).length;$('r1').textContent=n+' dari '+S.length;$('r2').textContent=pc(c);$('r3').textContent=best?S[best.i][0]:'–';
+$('ins').innerHTML=n==0?'Belum ada skill yang ditandai. Klik skill yang sudah Anda kuasai untuk melihat berapa persen lowongan yang bisa dilamar.':`Dengan ${n} skill dan toleransi kurang ${k} skill, sekitar <b>${pc(c)}</b> lowongan contoh bisa dilamar.`+(best?` Mempelajari <b>${S[best.i][0]}</b> menambah peluang paling besar, sekitar <b>+${Math.round(best.g*100)} poin</b>.`:' Semua skill sudah dikuasai.')+' Angka contoh, bukan hasil dari data.'}
+$('bars').onclick=e=>{const r=e.target.closest('.row');if(r){const i=+r.dataset.i;own[i]=!own[i];draw()}};$('sl').oninput=draw;draw();
+const G=[["scraping","i","Mengambil data dari halaman web secara otomatis dengan program."],["scraper","i","Program yang mengambil data dari halaman web secara otomatis."],["pipeline","i","Rangkaian langkah otomatis dari mengambil data sampai data siap dianalisis."],["reverse engineering","i","Menelusuri ulang kode dan data project lama untuk memahami cara kerjanya sebelum dibangun ulang."],["job description","i","Teks deskripsi pekerjaan di lowongan, berisi tugas dan persyaratan skill."],["skill share","i","Persentase lowongan yang menyebut satu skill.\nRumus: skill share = lowongan yang menyebut skill ÷ total lowongan.\nContoh: 390 dari 500 lowongan menyebut SQL, skill share SQL = 78%."],["median salary","i","Nilai tengah salary setelah diurutkan, tidak terpengaruh angka ekstrem.\nRumus: median dari titik tengah (salary_min + salary_max) ÷ 2 tiap lowongan.\nContoh: 6, 8, 9, 12, 25 juta, median = 9 juta."],["cakupan salary","i","Persentase lowongan yang mencantumkan salary.\nRumus: cakupan salary = lowongan dengan salary ÷ total lowongan.\nContoh: 110 dari 500 lowongan, cakupan = 22%."],["skill match","i","Persentase lowongan yang bisa dilamar dengan skill yang dimiliki.\nRumus: skill match = lowongan dengan semua skill dimiliki ÷ total lowongan.\nContoh: 120 dari 500 lowongan, skill match = 24%."],["volume mingguan","i","Jumlah lowongan baru yang ditemukan dalam satu minggu.\nRumus: hitung job_id dengan first_seen di minggu tersebut."],["salary","i","Gaji yang dicantumkan di lowongan, biasanya berupa rentang per bulan."],["KPI","","Key Performance Indicator: angka kunci untuk menilai sesuatu, misalnya skill share."],["dashboard","i","Halaman ringkasan interaktif berisi grafik dan angka kunci."],["SQL","","Bahasa untuk meminta dan mengolah data dari tabel database."],["DuckDB","","Database ringan dalam satu file, untuk menjalankan SQL tanpa server."],["CTE","","Common Table Expression: query bantu yang diberi nama di dalam query SQL agar query panjang lebih mudah dibaca."],["window function","i","Fungsi SQL yang menghitung nilai dengan melihat baris lain, misalnya selisih dengan minggu sebelumnya."],["regex","i","Pola teks untuk mencari kata atau format tertentu, misalnya kata \"Power BI\" atau angka salary."],["kamus skill","i","Daftar skill beserta sinonimnya, misalnya \"MS Excel\" dan \"spreadsheet\" dihitung sebagai Excel."],["normalisasi","i","Menyeragamkan penulisan, misalnya \"Jakarta Selatan\" dan \"DKI Jakarta\" menjadi Jakarta."],["precision","i","Dari semua skill yang ditemukan program, berapa persen yang benar.\nRumus: precision = benar ditemukan ÷ semua yang ditemukan."],["recall","i","Dari semua skill yang seharusnya ditemukan, berapa persen yang berhasil ditemukan.\nRumus: recall = benar ditemukan ÷ semua yang seharusnya ditemukan."],["co-occurrence","i","Seberapa sering dua hal muncul bersamaan, di sini dua skill di satu lowongan."],["robots.txt","","File di situs web yang menjelaskan halaman mana yang boleh diambil oleh program otomatis."],["Playwright","","Library untuk mengendalikan browser dengan program, berguna untuk halaman yang dimuat dengan JavaScript."],["GitHub Actions","i","Fitur GitHub yang menjalankan program otomatis sesuai jadwal atau saat kode berubah."],["Streamlit","","Alat untuk membuat dashboard web memakai Python."],["Plotly","","Library Python untuk grafik interaktif."],["pandas","","Library Python untuk mengolah data tabel."],["view","i","Query SQL yang disimpan dengan nama, sehingga bisa dipanggil seperti tabel."],["agregat","i","Data yang sudah diringkas, misalnya jumlah lowongan per kota, bukan data per lowongan."],["kamus data","i","Dokumen yang menjelaskan arti, satuan, dan contoh isi setiap kolom."],["README","","Dokumen penjelasan project yang dibaca pertama kali di repositori GitHub."],["hipotesis","i","Dugaan awal yang akan dibuktikan atau dibantah dengan data."],["duplikat","i","Data yang sama tercatat lebih dari sekali, misalnya lowongan yang diposting ulang."]];
+
+const TERMS=G.map(([t,f,d])=>({t,d,re:new RegExp('(?<![\\w.-])'+t.replace(/[.*+?^${}()|[\]\\-]/g,'\\$&')+'(?![\\w-])',f)}));
+const SK='svg,.row,.fx,.fbar,.oh,.wb,table td:first-child,h1,h2,h3,nav,button,script,style,summary,.tm,.tag,.pri,.pill,.v,.l,.chip,.flow,th,#tip,.banner,.theme,.phase,.add,.tools b,b.t,code';
+function wrapT(n,seen){let b=null;for(const x of TERMS){if(seen.has(x.t))continue;const m=x.re.exec(n.data);if(m&&(!b||m.index<b.i||(m.index==b.i&&m[0].length>b.l)))b={x,i:m.index,l:m[0].length}}
+if(!b)return;seen.add(b.x.t);const r=n.splitText(b.i),a=r.splitText(b.l),s=document.createElement('span');s.className='tm';s.tabIndex=0;s.dataset.d=b.x.d;s.textContent=r.data;r.replaceWith(s);wrapT(a,seen)}
+function hl(root,seen){const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement.closest(SK)?3:1}),ns=[];while(w.nextNode())ns.push(w.currentNode);ns.forEach(n=>wrapT(n,seen))}
+const tip=document.createElement('div');tip.id='tip';tip.setAttribute('role','tooltip');document.body.appendChild(tip);
+function showT(e){tip.textContent=e.dataset.d;tip.style.display='block';const r=e.getBoundingClientRect(),w=tip.offsetWidth,h=tip.offsetHeight;tip.style.left=Math.max(8,Math.min(innerWidth-w-8,r.left))+'px';tip.style.top=(r.bottom+h+12>innerHeight?r.top-h-6:r.bottom+6)+'px'}
+document.addEventListener('click',ev=>{const t=ev.target.closest('.tm');t?showT(t):tip.style.display='none'});
+document.addEventListener('mouseover',ev=>{const t=ev.target.closest('.tm');if(t)showT(t)});
+document.addEventListener('mouseout',ev=>{if(ev.target.closest&&ev.target.closest('.tm'))tip.style.display='none'});
+document.addEventListener('focusin',ev=>{const t=ev.target.closest&&ev.target.closest('.tm');if(t)showT(t)});
+addEventListener('scroll',()=>tip.style.display='none',{passive:true});
+const qg=$('qg');document.querySelector('.fbar').onclick=e=>{const b=e.target.closest('.fb');if(!b)return;const f=b.dataset.f;
+document.querySelectorAll('.fb').forEach(x=>x.classList.toggle('on',x==b));let th=null,vis=0;
+[...qg.children].forEach(el=>{if(el.classList.contains('theme')){if(th)th.hidden=!vis;th=el;vis=0}else{const show=f=='*'||el.dataset.p==f;el.hidden=!show;if(show)vis++}});if(th)th.hidden=!vis};
+let seen=new Set();[...document.querySelector('main').children].forEach(el=>{if(el.tagName=='H2')seen=new Set();hl(el,seen)});
+</script>
+</body></html>
