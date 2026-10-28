@@ -23,6 +23,7 @@ Skill (SQL, Python, Excel, BI) dan kisaran salary apa yang paling banyak diminta
 - Sumber data lanjutan: [here](https://id.jobstreet.com/) (Versi: scraping mingguan, satu batch per minggu; Tanggal akses: dicatat otomatis di kolom `scraped_at`)
 - Ukuran (perkiraan, belum diverifikasi): 2.560 postingan + ±150–300 postingan baru per minggu selama ±12 minggu.
 - Scraping mengikuti robots.txt dan ketentuan situs. Data mentah tidak dipublikasikan, hanya tabel agregat.
+- Lisensi: tidak ada lisensi terbuka. Isi lowongan adalah konten Jobstreet dan perusahaan pemasang; ketentuan layanan Jobstreet belum dicek. Data hanya diarsipkan privat, hanya hasil agregat yang dipublikasikan.
 
 ## 3. Analysis
 Belum dikerjakan. Rencana langkah ada di bagian Work Plan pada halaman rancangan.
