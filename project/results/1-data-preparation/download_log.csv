@@ -1,0 +1,3 @@
+file,bytes,rows,sha256,batch_id,version,access_date
+jobs_target_all.csv,14220,51,d53a5166e7014268fda9a48cd8bb69eca09ff45a463f3982f182d8734a72995a,v1,1 (scraper data-analyst-job-scraper),2026-10-18
+jobs_detail.csv,119733,53,ae395eee677c758e9d5901278604115725c67df247748ed12fa6e8172294629b,v1,1 (scraper data-analyst-job-scraper),2026-10-18

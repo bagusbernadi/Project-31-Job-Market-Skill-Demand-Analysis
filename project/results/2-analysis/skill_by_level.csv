@@ -1,0 +1,11 @@
+level,n_level,skill,jobs,share
+Senior,10,Power BI,5,0.5
+Senior,10,SQL,5,0.5
+Senior,10,Tableau,5,0.5
+Senior,10,Excel,4,0.4
+Senior,10,Python,4,0.4
+Tidak disebut,37,Excel,26,0.7027027
+Tidak disebut,37,SQL,17,0.45945946
+Tidak disebut,37,Power BI,16,0.43243243
+Tidak disebut,37,Tableau,12,0.32432432
+Tidak disebut,37,Python,11,0.2972973

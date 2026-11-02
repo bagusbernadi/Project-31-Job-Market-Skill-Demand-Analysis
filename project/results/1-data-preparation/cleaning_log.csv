@@ -1,0 +1,10 @@
+rule,description,rows_found,decision
+C1,Job ID ganda di jobs_target_all.csv atau jobs_detail.csv,0,"Tidak ada; dicek, tidak ada tindakan"
+C2,Deskripsi tanpa baris di daftar lowongan,2,"Dibuang (tidak ada judul, kota, atau tanggal)"
+C3,Lowongan tanpa deskripsi,0,Dibuang bila ada (skill tidak bisa diambil)
+C4,Spasi khusus (NBSP) dan spasi ganda pada teks,9,Diganti spasi biasa pada semua kolom teks
+C5,Salary ditulis sebagai teks bebas ('Rp 7.000.000 – Rp 10.500.000 per month'),9,"Diparse ke salary_min dan salary_max (per bulan); 9 berhasil, sisanya kosong (tidak dicantumkan)"
+C6,listing_date berformat UTC (ISO 8601),51,Diubah ke tanggal WIB (posted_date) dan awal minggu Senin (week_start)
+C7,"Nama kota tidak seragam (kecamatan, provinsi, 'Indonesia')",50,Dinormalisasi ke kota/wilayah seragam (kolom city); kolom industry diisi klasifikasi bidang Jobstreet (bukan industri perusahaan)
+C8,Deskripsi identik (iklan sama diposting ulang atau dobel),3,"Dibuang, yang paling awal dipertahankan"
+C9,Judul dan perusahaan sama tetapi deskripsi berbeda,0,Dipertahankan (bisa posisi berbeda); hanya dicatat

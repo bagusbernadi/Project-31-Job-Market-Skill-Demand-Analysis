@@ -1,0 +1,49 @@
+week_start,city,level,industry,work_type,salary_min,salary_max,remote_hybrid,Excel,Google Sheets,SQL,BigQuery,Python,R,VBA/Macro,Power BI,Tableau,Looker Studio,Dashboard,ETL,Spark,Statistik,Machine Learning
+2026-03-23,Tidak spesifik,Tidak disebut,Pengembangan & Administrasi Database,Full time,,,False,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+2026-07-13,Tangerang,Tidak disebut,"Matematika, Statistik & Teknik Informasi",Full time,,,False,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0
+2026-08-31,Jakarta,Junior,Manajemen & Dukungan,Full time,,,False,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+2026-09-07,Tangerang,Tidak disebut,Pengembangan & Administrasi Database,Full time,,,False,1,1,0,0,0,0,0,0,0,1,1,0,0,0,0
+2026-09-14,Jakarta,Tidak disebut,Analis Bisnis/Sistem,Full time,,,False,0,0,1,0,0,0,0,1,1,0,1,0,0,0,0
+2026-09-14,Jakarta,Tidak disebut,Pengembangan & Administrasi Database,Full time,,,True,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+2026-09-21,Jakarta,Tidak disebut,Analis Bisnis/Sistem,Full time,,,False,0,0,1,0,1,0,0,1,0,0,1,1,0,0,0
+2026-09-21,Jakarta,Tidak disebut,Analis Bisnis/Sistem,Kontrak/Temporer,7000000.0,10000000.0,False,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0
+2026-09-21,Jakarta,Tidak disebut,Kepatuhan & Resiko,Kontrak/Temporer,,,False,0,0,1,1,1,0,0,1,1,1,1,0,0,0,0
+2026-09-21,Jakarta,Tidak disebut,Manajemen & Dukungan,Full time,,,False,1,0,1,1,1,0,0,1,1,1,1,0,0,0,0
+2026-09-21,Jakarta,Tidak disebut,"Matematika, Statistik & Teknik Informasi",Kontrak/Temporer,,,False,1,0,1,0,1,0,0,1,1,0,1,1,0,1,0
+2026-09-21,Jakarta,Senior,"Matematika, Statistik & Teknik Informasi",Full time,,,False,1,0,1,0,1,0,0,1,0,0,1,0,0,0,0
+2026-09-21,Jakarta,Tidak disebut,Pemasaran Digital & Pencarian,Kontrak/Temporer,,,False,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+2026-09-21,Jakarta,Tidak disebut,Pengembangan & Administrasi Database,Full time,,,False,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+2026-09-21,Jakarta,Tidak disebut,Pengembangan & Administrasi Database,Full time,,,False,0,0,1,0,1,0,0,1,1,1,1,0,0,0,0
+2026-09-21,Surabaya,Tidak disebut,Jasa Otomotif,Full time,4500000.0,5000000.0,False,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+2026-09-21,Surabaya,Tidak disebut,Pengembangan & Administrasi Database,Full time,,,False,1,1,1,0,1,0,0,0,0,0,1,0,0,0,0
+2026-09-21,Tangerang,Tidak disebut,Pengembangan & Administrasi Database,Full time,,,False,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0
+2026-09-28,Bali,Tidak disebut,Asisten Administratif,Full time,,,False,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0
+2026-09-28,Jakarta,Tidak disebut,Analisis & Pelaporan,Full time,7000000.0,9000000.0,False,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0
+2026-09-28,Jakarta,Senior,Kepatuhan & Resiko,Full time,,,False,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+2026-09-28,Jakarta,Tidak disebut,Kredit,Full time,,,False,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0
+2026-09-28,Jakarta,Senior,"Matematika, Statistik & Teknik Informasi",Full time,,,False,0,0,1,0,1,0,0,0,1,0,1,1,0,1,0
+2026-09-28,Jakarta,Tidak disebut,Pengembangan & Administrasi Database,Full time,5750000.0,7000000.0,False,0,0,1,0,0,0,0,1,1,1,1,0,0,0,0
+2026-09-28,Medan,Tidak disebut,Analisis & Pelaporan,Full time,,,False,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+2026-09-28,Tangerang,Tidak disebut,Analisis & Pelaporan,Full time,5000000.0,6500000.0,False,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+2026-09-28,Tangerang,Tidak disebut,Pengembangan & Administrasi Database,Full time,,,False,1,0,0,0,0,0,0,1,0,1,1,0,0,0,0
+2026-10-05,Bandung,Senior,Pengembangan & Administrasi Database,Full time,7000000.0,10500000.0,True,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0
+2026-10-05,Jakarta,Senior,Analis Bisnis/Sistem,Full time,,,False,1,0,1,0,1,1,1,1,1,0,0,0,0,1,0
+2026-10-05,Jakarta,Senior,Analis Bisnis/Sistem,Full time,,,False,0,0,1,0,1,0,0,1,1,0,1,0,0,0,0
+2026-10-05,Jakarta,Senior,Analis Bisnis/Sistem,Full time,,,False,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0
+2026-10-05,Jakarta,Tidak disebut,"Matematika, Statistik & Teknik Informasi",Kontrak/Temporer,,,False,1,0,1,0,1,0,0,0,1,1,1,0,0,0,0
+2026-10-05,Jakarta,Senior,"Matematika, Statistik & Teknik Informasi",Full time,,,False,0,0,0,0,0,0,0,1,1,0,1,0,0,0,0
+2026-10-05,Medan,Tidak disebut,Manajemen – Departemen/Asisten,Full time,,,False,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0
+2026-10-05,Surabaya,Tidak disebut,Analis,Full time,,,False,1,0,1,0,1,0,0,1,0,0,1,0,0,0,0
+2026-10-05,Tangerang,Tidak disebut,"Pembelian, Pengadaan & Inventaris",Full time,,,False,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+2026-10-12,Jakarta,Tidak disebut,Analis,Full time,,,False,0,0,1,0,1,1,0,1,1,0,1,0,0,0,0
+2026-10-12,Jakarta,Tidak disebut,Analis Bisnis/Sistem,Full time,7000000.0,8500000.0,False,1,0,0,0,0,0,0,1,1,1,1,0,0,0,0
+2026-10-12,Jakarta,Tidak disebut,Analis Bisnis/Sistem,Full time,,,False,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+2026-10-12,Jakarta,Tidak disebut,Analisis & Pelaporan,Kontrak/Temporer,,,False,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+2026-10-12,Jakarta,Tidak disebut,Entri Data & Pengolahan Kata,Full time,,,False,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0
+2026-10-12,Jakarta,Senior,Kepatuhan & Resiko,Full time,,,False,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+2026-10-12,Jakarta,Tidak disebut,Pengembangan & Administrasi Database,Kontrak/Temporer,,,False,0,0,1,0,1,0,0,0,0,0,1,1,0,0,0
+2026-10-12,Jakarta,Senior,Pengembangan & Administrasi Database,Kontrak/Temporer,,,False,1,1,0,0,0,0,0,0,0,0,1,0,0,0,0
+2026-10-12,Jakarta,Tidak disebut,Strategi & Perencanaan,Full time,,,False,1,1,0,0,0,0,0,0,0,0,1,0,0,0,0
+2026-10-12,Surabaya,Tidak disebut,Analis Bisnis/Sistem,Full time,,,False,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0
+2026-10-12,Surabaya,Tidak disebut,"Matematika, Statistik & Teknik Informasi",Full time,5288800.0,7500000.0,False,1,0,0,0,0,0,0,0,0,0,1,0,0,1,0
+2026-10-12,Yogyakarta,Tidak disebut,Analis Bisnis/Sistem,Kontrak/Temporer,2500000.0,3500000.0,False,1,1,1,0,1,1,0,1,1,0,1,1,0,0,0

@@ -1,0 +1,55 @@
+skill_a,skill_b,jobs
+Power BI,SQL,15
+Power BI,Tableau,15
+Python,SQL,15
+SQL,Tableau,13
+Excel,Power BI,12
+Excel,SQL,12
+Power BI,Python,11
+Python,Tableau,10
+Excel,Python,8
+Excel,Tableau,8
+Excel,Google Sheets,7
+Looker Studio,Power BI,7
+Looker Studio,Tableau,7
+Excel,Looker Studio,6
+Looker Studio,SQL,6
+ETL,Python,5
+ETL,SQL,5
+Looker Studio,Python,4
+SQL,Statistik,4
+ETL,Power BI,3
+ETL,Tableau,3
+Excel,Statistik,3
+Google Sheets,SQL,3
+Power BI,R,3
+Python,R,3
+Python,Statistik,3
+R,SQL,3
+R,Tableau,3
+Statistik,Tableau,3
+BigQuery,Looker Studio,2
+BigQuery,Power BI,2
+BigQuery,Python,2
+BigQuery,SQL,2
+BigQuery,Tableau,2
+ETL,Excel,2
+ETL,Statistik,2
+Excel,R,2
+Google Sheets,Looker Studio,2
+Google Sheets,Power BI,2
+Google Sheets,Python,2
+Google Sheets,Tableau,2
+Power BI,Statistik,2
+BigQuery,Excel,1
+ETL,Google Sheets,1
+ETL,R,1
+Excel,VBA/Macro,1
+Google Sheets,R,1
+Power BI,VBA/Macro,1
+Python,VBA/Macro,1
+R,Statistik,1
+R,VBA/Macro,1
+SQL,VBA/Macro,1
+Statistik,VBA/Macro,1
+Tableau,VBA/Macro,1

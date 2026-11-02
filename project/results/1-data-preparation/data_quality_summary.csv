@@ -1,0 +1,10 @@
+item,value
+Baris jobs_target_all.csv (mentah),51
+Baris jobs_detail.csv (mentah),53
+Lowongan setelah digabung dengan deskripsi,51
+Duplikat dibuang,3
+Lowongan unik dianalisis,48
+Salary tercantum,9
+Salary kosong,39
+Kota/wilayah unik,8
+Perusahaan unik,35

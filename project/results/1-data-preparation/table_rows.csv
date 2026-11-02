@@ -1,0 +1,5 @@
+table,rows
+job_postings_raw,51
+job_postings,48
+job_skills,165
+dim_skill,15

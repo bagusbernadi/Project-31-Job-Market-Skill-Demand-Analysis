@@ -1,0 +1,5 @@
+skenario,bisa_dilamar,total,share
+Excel,15,48,0.3125
+Excel + SQL,17,48,0.35416667
+Excel + SQL + Python,17,48,0.35416667
+Excel + SQL + Python + Power BI,21,48,0.4375

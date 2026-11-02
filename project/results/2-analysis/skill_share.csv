@@ -1,0 +1,16 @@
+skill,category,jobs,total,share
+Excel,Spreadsheet,30,48,0.625
+Dashboard,Konsep,28,48,0.58333333
+SQL,Database & query,22,48,0.45833333
+Power BI,Tools BI,21,48,0.4375
+Tableau,Tools BI,17,48,0.35416667
+Python,Pemrograman,15,48,0.3125
+Looker Studio,Tools BI,9,48,0.1875
+Google Sheets,Spreadsheet,7,48,0.14583333
+ETL,Data engineering,5,48,0.10416667
+Statistik,Statistik,5,48,0.10416667
+R,Pemrograman,3,48,0.0625
+BigQuery,Database & query,2,48,0.04166667
+VBA/Macro,Pemrograman,1,48,0.02083333
+Machine Learning,Statistik,0,48,0.0
+Spark,Data engineering,0,48,0.0

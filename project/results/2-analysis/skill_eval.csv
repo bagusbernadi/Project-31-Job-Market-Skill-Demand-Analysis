@@ -1,0 +1,17 @@
+skill,labeled,extracted,tp,fp,fn,precision,recall
+Excel,14,14,14,0,0,1.0,1.0
+Google Sheets,3,3,3,0,0,1.0,1.0
+SQL,11,11,11,0,0,1.0,1.0
+BigQuery,0,0,0,0,0,,
+Python,7,7,7,0,0,1.0,1.0
+R,1,1,1,0,0,1.0,1.0
+VBA/Macro,1,1,1,0,0,1.0,1.0
+Power BI,6,6,6,0,0,1.0,1.0
+Tableau,4,4,4,0,0,1.0,1.0
+Looker Studio,3,3,3,0,0,1.0,1.0
+Dashboard,11,11,11,0,0,1.0,1.0
+ETL,2,2,2,0,0,1.0,1.0
+Spark,0,0,0,0,0,,
+Statistik,2,1,1,0,1,1.0,0.5
+Machine Learning,1,0,0,0,1,,0.0
+SEMUA (micro),66,64,64,0,2,1.0,0.969697

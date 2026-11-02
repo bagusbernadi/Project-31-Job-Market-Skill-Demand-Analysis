@@ -1,0 +1,15 @@
+dimension,val,jobs,with_salary,coverage
+Kota,Jakarta,31,4,0.12903226
+Kota,Tangerang,6,1,0.16666667
+Kota,Surabaya,5,2,0.4
+Kota,Medan,2,0,0.0
+Kota,Bali,1,0,0.0
+Kota,Bandung,1,1,1.0
+Kota,Tidak spesifik,1,0,0.0
+Kota,Yogyakarta,1,1,1.0
+Level,Tidak disebut,37,8,0.21621622
+Level,Senior,10,1,0.1
+Level,Junior,1,0,0.0
+Semua,Semua lowongan,48,9,0.1875
+Tipe kerja,Full time,39,7,0.17948718
+Tipe kerja,Kontrak/Temporer,9,2,0.22222222

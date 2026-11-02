@@ -1,0 +1,22 @@
+# Jadwal scraping mingguan. BELUM PERNAH DIJALANKAN (dibuat di sesi tanpa akses ke Jobstreet dan GitHub Actions).
+# Data mentah tidak di-commit: hasil disimpan sebagai artifact privat dan diunduh manual ke DataCenter.
+name: weekly-scrape
+on:
+  schedule:
+    - cron: "17 2 * * 1"        # Senin 09:17 WIB
+  workflow_dispatch:
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install pandas playwright && playwright install --with-deps chromium
+      - run: python project/code/1-data-preparation/python/scraper/scrape_jobs.py --max-pages 5
+      - uses: actions/upload-artifact@v4
+        with:
+          name: raw-batch
+          path: project/data/raw/batch_*/
+          retention-days: 30

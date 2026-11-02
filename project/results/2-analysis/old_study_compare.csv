@@ -1,0 +1,21 @@
+old_skill,skill,old_jobs,new_jobs,old_pct,new_pct,selisih_jumlah,status
+Excel,Excel,30,30.0,62.5,62.5,0.0,Sama
+Dashboard,Dashboard,28,28.0,58.3,58.3,0.0,Sama
+SQL,SQL,22,22.0,45.8,45.8,0.0,Sama
+Power BI,Power BI,21,21.0,43.8,43.8,0.0,Sama
+Problem solving,Problem solving,21,,43.8,,,Tidak ada di kamus baru
+Komunikasi,Komunikasi,21,,43.8,,,Tidak ada di kamus baru
+Visualisasi,Visualisasi,20,,41.7,,,Tidak ada di kamus baru
+Tableau,Tableau,17,17.0,35.4,35.4,0.0,Sama
+Python,Python,15,15.0,31.2,31.2,0.0,Sama
+Bahasa Inggris,Bahasa Inggris,11,,22.9,,,Tidak ada di kamus baru
+Looker Studio,Looker Studio,9,9.0,18.8,18.8,0.0,Sama
+Google Sheets,Google Sheets,7,7.0,14.6,14.6,0.0,Sama
+Presentasi,Presentasi,7,,14.6,,,Tidak ada di kamus baru
+ETL,ETL,5,5.0,10.4,10.4,0.0,Sama
+Statistik (skill),Statistik,5,5.0,10.4,10.4,0.0,Sama
+R,R,3,3.0,6.2,6.2,0.0,Sama
+BigQuery,BigQuery,2,2.0,4.2,4.2,0.0,Sama
+Pandas/Numpy,Pandas/Numpy,2,,4.2,,,Tidak ada di kamus baru
+VBA/Macro,VBA/Macro,1,1.0,2.1,2.1,0.0,Sama
+Machine Learning,Machine Learning,0,0.0,0.0,0.0,0.0,Sama

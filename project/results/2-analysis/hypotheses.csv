@@ -1,0 +1,6 @@
+no,hypothesis,evidence,p_value,verdict
+1,SQL dan Excel muncul di lebih dari 60% lowongan.,SQL 22/48; Excel 30/48,0.98338805,Sebagian
+2,Jakarta menyumbang lebih dari separuh lowongan.,Jakarta 31/48,0.02973169,Terbukti
+3,Kurang dari 30% lowongan mencantumkan salary.,Salary tercantum 9/48,0.05696278,Sebagian
+4,Python lebih sering diminta di level senior dibanding junior.,"Senior 4/10, Junior 0/1; kelompok < 5 lowongan",,Sebagian
+5,Power BI lebih sering diminta dibanding Tableau.,"Power BI 21/48, Tableau 17/48; hanya Power BI 6, hanya Tableau 2",0.14453125,Sebagian

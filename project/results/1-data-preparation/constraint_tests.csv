@@ -1,0 +1,7 @@
+test,outcome
+job_id ganda di job_postings,ditolak
+job_skills dengan job_id yang tidak ada,ditolak
+job_skills dengan skill yang tidak ada di dim_skill,ditolak
+level di luar daftar,ditolak
+salary_min lebih besar dari salary_max,ditolak
+match_type di luar daftar,ditolak

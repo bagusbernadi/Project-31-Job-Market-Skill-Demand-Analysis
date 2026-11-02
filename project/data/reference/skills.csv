@@ -1,0 +1,16 @@
+skill,category,keyword_regex,synonym_regex,case_sensitive
+Excel,Spreadsheet,\bexcel\b,spreadsheet,0
+Google Sheets,Spreadsheet,google sheets?,,0
+SQL,Database & query,\bsql\b,mysql|postgres|sql server|bigquery,0
+BigQuery,Database & query,bigquery,,0
+Python,Pemrograman,\bpython\b,pandas|numpy,0
+R,Pemrograman,(?<![\w&/])R(?![\w&/]),,1
+VBA/Macro,Pemrograman,\bvba\b,macro,0
+Power BI,Tools BI,power\s?bi,,0
+Tableau,Tools BI,tableau,,0
+Looker Studio,Tools BI,looker,data studio,0
+Dashboard,Konsep,dashboard,,0
+ETL,Data engineering,\betl\b,,0
+Spark,Data engineering,\bspark\b,pyspark,0
+Statistik,Statistik,statistical|analisis statistik|teknik statistik|metode statistik|uji statistik,,0
+Machine Learning,Statistik,machine learning,,0

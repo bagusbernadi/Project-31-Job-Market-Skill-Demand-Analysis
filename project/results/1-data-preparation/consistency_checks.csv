@@ -1,0 +1,6 @@
+check,violations
+job_skills tanpa lowongan,0
+lowongan tanpa baris di job_postings_raw,0
+lowongan dengan salary_min tetapi salary_max kosong,0
+posted_date setelah scraped_at,0
+week_start bukan hari Senin,0
